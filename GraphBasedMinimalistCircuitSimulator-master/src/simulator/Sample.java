@@ -34,6 +34,17 @@ public class Sample {
         Simulator.debugger.addTrackItem(or,and);
 */
 
+      //  Mux2to1 mux=new Mux2to1("mux","3x1",Simulator.trueLogic,Simulator.falseLogic,Simulator.trueLogic);
+      //  Mux4to2 mux1=new Mux4to2("mux1","6x1",Simulator.trueLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic);
+      /*//test mux16x4
+       Mux16to4 mux1=new Mux16to4("mux","20x1",
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic,
+                Simulator.trueLogic,Simulator.trueLogic,Simulator.trueLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic,Simulator.trueLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,
+                Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+                );
+        Simulator.debugger.addTrackItem(mux1);*/
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }
