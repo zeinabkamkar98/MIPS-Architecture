@@ -34,8 +34,6 @@ public class Adder extends Wrapper {
         for (int i = 1; i < fullAddersSize; ++i)
             fullAdders.get(i).addInput(fullAdders.get(i - 1).getOutput(0));
 
-        addOutput(fullAdders.get(fullAddersSize - 1).getOutput(0));
-
         for (int i = fullAddersSize - 1; i >= 0; --i)
             addOutput(fullAdders.get(i).getOutput(1));
 

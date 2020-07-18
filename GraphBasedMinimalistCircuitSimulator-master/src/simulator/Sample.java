@@ -8,12 +8,12 @@ import simulator.wrapper.wrappers.*;
 public class Sample {
     public static void main(String[] args) {
         //sample circuit
-       /* Adder adder = new Adder("ADDER", "10X6",
-                Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
+    /*    Adder adder = new Adder("ADDER", "10X5",
+                Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic,
                 Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic);
 
-        Simulator.debugger.addTrackItem(adder);*/
-
+        Simulator.debugger.addTrackItem(adder);
+*/
 /*        HalfSubtractor sub=new HalfSubtractor("sub1","2X2");
         sub.addInput(Simulator.falseLogic,Simulator.trueLogic);*/
 
