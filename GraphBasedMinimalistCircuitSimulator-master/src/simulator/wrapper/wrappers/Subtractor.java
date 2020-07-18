@@ -34,8 +34,6 @@ public class Subtractor extends Wrapper {
         for (int i = 1; i < fullSubtractorSize; ++i)
             fullSubtractors.get(i).addInput(fullSubtractors.get(i - 1).getOutput(0));
 
-        addOutput(fullSubtractors.get(fullSubtractorSize - 1).getOutput(0));
-
         for (int i = fullSubtractorSize - 1; i >= 0; --i)
             addOutput(fullSubtractors.get(i).getOutput(1));
 
