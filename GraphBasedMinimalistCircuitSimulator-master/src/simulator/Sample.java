@@ -17,11 +17,11 @@ public class Sample {
 /*        HalfSubtractor sub=new HalfSubtractor("sub1","2X2");
         sub.addInput(Simulator.falseLogic,Simulator.trueLogic);*/
 
-        Subtractor sub = new Subtractor("sub", "12X6",
+/*        Subtractor sub = new Subtractor("sub", "12X6",
                 Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,Simulator.trueLogic,
                 Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic, Simulator.falseLogic,Simulator.trueLogic);
 
-        Simulator.debugger.addTrackItem(sub);
+        Simulator.debugger.addTrackItem(sub);*/
 /*
         BIGAND and=new BIGAND("BIGAND","6X3",
                 Simulator.trueLogic,Simulator.trueLogic,Simulator.falseLogic,
@@ -43,6 +43,24 @@ public class Sample {
                 Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
                 );
         Simulator.debugger.addTrackItem(mux1);*/
+
+        ALU alu=new ALU("alu","68x33");
+        alu.addInput(
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic,
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.trueLogic,
+
+                Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+
+                );
+        Simulator.debugger.addTrackItem(alu);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }

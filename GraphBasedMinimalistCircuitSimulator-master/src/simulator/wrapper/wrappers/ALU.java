@@ -1,6 +1,7 @@
 package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
+import simulator.gates.combinational.Not;
 import simulator.gates.combinational.Or;
 import simulator.network.Link;
 import simulator.wrapper.Wrapper;
@@ -11,7 +12,7 @@ import java.util.List;
 //a generic adder
 public class ALU extends Wrapper {
     //input=>0=in1(h),...,31=in1(l),32=in2(h),...63=in(l),64=control0,65=control1,66=control2,67=control3
-    //output=>0=out(l),...,31=out(h),32=zero
+    //output=>0=out(h),...,31=out(l),32=zero
 
     public ALU(String label, String stream, Link... links) {
         super(label, stream, links);
@@ -23,8 +24,9 @@ public class ALU extends Wrapper {
         Subtractor subtractor=new Subtractor("aluSubtractor","64x32");
         BIGAND and=new BIGAND("aluAnd","64x32");
         BIGOR or=new BIGOR("aluOr","64x32");
-        Mux16to4 mux=new Mux16to4("aluMux16x4","20x1");
-        Or zero=new Or("AluZero");
+        List<Mux16to4> muxs = new ArrayList<>();
+        Or notZero=new Or("notZero");
+        Not zero=new Not("aluZero");
 
         adder.addInput(
                 getInput(0),getInput(1),getInput(2),getInput(3),getInput(4),getInput(5),getInput(6),getInput(7),
@@ -71,6 +73,22 @@ public class ALU extends Wrapper {
                 getInput(56),getInput(57),getInput(58),getInput(59),getInput(60),getInput(61),getInput(62),getInput(63)
         );
 
+        for(int i=0;i<32;i++){
+            muxs.add(new Mux16to4("mux" + i, "20x1",
+                    getInput(64), getInput(65), getInput(66), getInput(67),
+                    and.getOutput(i), or.getOutput(i), adder.getOutput(i), Simulator.falseLogic, Simulator.falseLogic,
+                    Simulator.falseLogic, subtractor.getOutput(i), subtractor.getOutput(0), Simulator.falseLogic,
+                    Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
+                    Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic
+                    )
+            );
+        }
+        for(int i=0;i<32;i++) {
+            addOutput(muxs.get(i).getOutput(0));
+            notZero.addInput(getOutput(i));
+        }
+        zero.addInput(notZero.getOutput(0));
+        addOutput(zero.getOutput(0));
 
     }
 }
