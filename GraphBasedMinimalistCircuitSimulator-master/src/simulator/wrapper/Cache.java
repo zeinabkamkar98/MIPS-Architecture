@@ -1,4 +1,6 @@
-import simulator.Mux2to1;
+package simulator.wrapper;
+
+import simulator.wrapper.wrappers.Mux2to1;
 import simulator.SubCache;
 import simulator.control.Simulator;
 import simulator.gates.combinational.Memory;

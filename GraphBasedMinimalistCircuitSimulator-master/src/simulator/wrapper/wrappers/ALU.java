@@ -11,7 +11,8 @@ import java.util.List;
 
 //a generic adder
 public class ALU extends Wrapper {
-    //input=>0=in1(h),...,31=in1(l),32=in2(h),...63=in(l),64=control0,65=control1,66=control2,67=control3
+    //input=>0=in1(h),...,31=in1(l),32=in2(h),...63=in(l)
+    //64=control0,65=control1,66=control2,67=control3
     //output=>0=out(h),...,31=out(l),32=zero
 
     public ALU(String label, String stream, Link... links) {
