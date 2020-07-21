@@ -28,7 +28,7 @@ output:data which is in flip flop
     @Override
     public void initialize() {
 
-        DFlipFlop flipFlop=new DFlipFlop("DFF",getInput(0),Simulator.trueLogic);
+        DFlipFlop flipFlop=new DFlipFlop("DFF","2x2",getInput(0),Simulator.trueLogic);
         Mux2to1 mux1 =new Mux2to1("mux","3x1", getInput(1)
                 , flipFlop.getOutput(0),
                 getInput(2));
