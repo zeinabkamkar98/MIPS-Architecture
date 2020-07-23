@@ -57,8 +57,27 @@ public class Sample {
 
         controlUnit.addInput(Simulator.falseLogic, Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic);
         //controlUnit.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
-        alucontrolunit.addInput(Simulator.trueLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic);
-        Simulator.debugger.addTrackItem(pc,nextPcValue,memory,controlUnit,alucontrolunit);
+        alucontrolunit.addInput(controlUnit.getOutput(7),controlUnit.getOutput(8),Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic);
+//        alucontrolunit.addInput(controlUnit.getOutput(7),controlUnit.getOutput(8),
+//                memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),memory.getOutput(30),memory.getOutput(31)
+//                );
+        ALU alu=new ALU("alu","68x33");
+        alu.addInput(
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic,
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,
+
+                alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0)
+        );
+
+        Simulator.debugger.addTrackItem(controlUnit,alucontrolunit,alu);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }
