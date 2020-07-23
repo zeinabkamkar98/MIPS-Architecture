@@ -1,5 +1,6 @@
 package simulator.wrapper.wrappers;
 
+import simulator.SubCache;
 import simulator.control.Simulator;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;

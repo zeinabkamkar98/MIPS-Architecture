@@ -1,6 +1,7 @@
 package simulator.wrapper;
 
 import simulator.Sample;
+import simulator.SubCache;
 import simulator.control.Simulator;
 import simulator.gates.combinational.*;
 import simulator.gates.sequential.Clock;
