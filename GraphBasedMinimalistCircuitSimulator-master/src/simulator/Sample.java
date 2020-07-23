@@ -31,6 +31,10 @@ public class Sample {
         NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
+        ALU alu=new ALU("alu","68x33");
+
+        SignExtend signExtend=new SignExtend("signExtend","16x32");
+        List<Mux2to1> muxs = new ArrayList<>();
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),nextPcValue.getOutput(4),nextPcValue.getOutput(5),nextPcValue.getOutput(6),nextPcValue.getOutput(7),
@@ -40,19 +44,18 @@ public class Sample {
         );
 
         nextPcValue.addInput(
+
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
                 pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
                 pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
-//                memory.getOutput(6),memory.getOutput(7),memory.getOutput(8),memory.getOutput(9),memory.getOutput(10),memory.getOutput(11),memory.getOutput(12),memory.getOutput(13),
-//                memory.getOutput(14),memory.getOutput(15),memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21),
-//                memory.getOutput(22),memory.getOutput(23),memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),
-//                memory.getOutput(30),memory.getOutput(31),
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.trueLogic,
-                Simulator.falseLogic,controlUnit.getOutput(6),controlUnit.getOutput(9)
+
+                memory.getOutput(6),memory.getOutput(7),memory.getOutput(8),memory.getOutput(9),memory.getOutput(10),memory.getOutput(11),memory.getOutput(12),memory.getOutput(13),
+                memory.getOutput(14),memory.getOutput(15),memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21),
+                memory.getOutput(22),memory.getOutput(23),memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),
+                memory.getOutput(30),memory.getOutput(31),
+
+                alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)
         );
 
         controlUnit.addInput(Simulator.falseLogic, Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic);
@@ -61,21 +64,34 @@ public class Sample {
 //        alucontrolunit.addInput(controlUnit.getOutput(7),controlUnit.getOutput(8),
 //                memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),memory.getOutput(30),memory.getOutput(31)
 //                );
-        ALU alu=new ALU("alu","68x33");
+
+
+        //first alu input
         alu.addInput(
-
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic,
-
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,
-
-                alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0)
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic
+                );
+        //second alu input
+        signExtend.addInput(
+                memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21), memory.getOutput(22),memory.getOutput(23),
+                memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29), memory.getOutput(30),memory.getOutput(31)
         );
+
+        for(int i=0;i<32;i++){
+            muxs.add(new Mux2to1("mux" + i, "3x1",
+                            controlUnit.getOutput(1),
+                            Simulator.trueLogic,signExtend.getOutput(i)
+                    )
+            );
+        }
+        for(int i=0;i<32;i++) {
+            alu.addInput(muxs.get(i).getOutput(0));
+        }
+
+        //alu control signal
+        alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
 
         Simulator.debugger.addTrackItem(controlUnit,alucontrolunit,alu);
         Simulator.debugger.setDelay(500);
