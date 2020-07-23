@@ -5,6 +5,7 @@ import simulator.gates.combinational.And;
 import simulator.gates.combinational.Not;
 import simulator.gates.combinational.Or;
 import simulator.network.Link;
+
 /**
  * Input[0]:Aluop1
  * Input[1]:Aluop2
@@ -15,6 +16,7 @@ import simulator.network.Link;
  * Input[6:F1
  * Input[7]:F0
  */
+
 public class ALUControlUnit extends Wrapper {
     public ALUControlUnit(String label, String stream, Link... links) {
         super(label, stream, links);
