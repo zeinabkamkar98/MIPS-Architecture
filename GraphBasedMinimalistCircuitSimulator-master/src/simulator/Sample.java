@@ -30,6 +30,7 @@ public class Sample {
         PC pc = new PC("PC", "32X32");
         NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
+        ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),nextPcValue.getOutput(4),nextPcValue.getOutput(5),nextPcValue.getOutput(6),nextPcValue.getOutput(7),
@@ -55,8 +56,9 @@ public class Sample {
         );
 
         controlUnit.addInput(Simulator.falseLogic, Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic);
-
-        Simulator.debugger.addTrackItem(pc,nextPcValue,memory,controlUnit);
+        //controlUnit.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
+        alucontrolunit.addInput(Simulator.trueLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic);
+        Simulator.debugger.addTrackItem(pc,nextPcValue,memory,controlUnit,alucontrolunit);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }
