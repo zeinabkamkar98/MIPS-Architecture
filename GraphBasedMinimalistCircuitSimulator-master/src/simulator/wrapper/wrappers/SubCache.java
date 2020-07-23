@@ -1,4 +1,4 @@
-package simulator;
+package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
 import simulator.network.Link;

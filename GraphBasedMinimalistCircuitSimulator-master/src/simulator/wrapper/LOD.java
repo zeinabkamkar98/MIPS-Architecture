@@ -1,9 +1,10 @@
 package simulator.wrapper;
 
-import simulator.SubCache;
 import simulator.control.Simulator;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
+import simulator.wrapper.wrappers.SubCache;
+
 /**
  * input0,1:Signal
  * input2,514:write data
