@@ -43,11 +43,9 @@ public class Memory extends Node {
             for(int i = 34; i < 66; ++i) {
                 memoryP1[address() + i - 34] = getInput(i).getSignal();
             }
-        else
-            for(int i = 34; i < 66; ++i) {
-                memoryP2[address() + i - 34] = getInput(i).getSignal();
-            }
-
+        else{for(int i = 34; i < 66; ++i) {
+            memoryP2[address() + i - 34] = getInput(i).getSignal();
+        }}
     }
 
     private void memoryRead(){
@@ -55,30 +53,30 @@ public class Memory extends Node {
             for (int i = 0; i < 32; ++i) {
                 getOutput(i).setSignal(memoryP1[address() + i]);
             }
-        else
+        else{
             for (int i = 0; i < 32; ++i) {
-                getOutput(i).setSignal(memoryP2[address() + i]);
-            }
+                getOutput(i).setSignal(memoryP2[address() + i]);}
+
+        }
     }
 
     @Override
     public void evaluate() {
-        if (getInput(1).getSignal()&&!getInput(0).getSignal()) {
+        if (getInput(1).getSignal()) {
             memoryWrite();
         } else
-        if (getInput(0).getSignal()&&!(getInput(1).getSignal())) {
+        if (getInput(0).getSignal()) {
 
             memoryRead();
         }
     }
 
-    public void setMemory(Boolean[] memory1,Boolean[] memory2) {
-        this.memoryP1 = memory1;
-        this.memoryP2 = memory2;
-
+    public void setMemory(Boolean[] memoryP1,Boolean[] memoryP2) {
+        this.memoryP1 = memoryP1;
+        this.memoryP2 = memoryP2;
     }
 
-    public Boolean[] getMemory1() {
+    public Boolean[] getMemoryP1() {
         return memoryP1;
     }
     public Boolean[] getMemoryP2() {
