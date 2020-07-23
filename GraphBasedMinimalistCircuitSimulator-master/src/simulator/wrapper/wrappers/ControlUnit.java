@@ -8,7 +8,16 @@ import simulator.wrapper.Wrapper;
 
 public class ControlUnit extends Wrapper {
 //OP0//OP1//OP2//OP3...//OP5
-//RegDST//ALUSRC//MemToReg//RegWrite//MemRead//MemWrite//Branch//ALUOP1//ALUOP2//Jump
+//output 0 RegDST
+//output 1 ALUSRC//
+//output 2 MemToReg
+//output 3 RegWrite
+//output 4 MemRead
+//output 5  MemWrite
+//output 6 Branch
+//output 7 ALUOP1
+//output 8  ALUOP2
+//output 9  Jump
     public ControlUnit(String label, String stream, Link... links) {
         super(label, stream, links);
     }
