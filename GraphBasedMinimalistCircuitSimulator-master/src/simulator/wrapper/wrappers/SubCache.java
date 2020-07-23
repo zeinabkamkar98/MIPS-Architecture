@@ -1,10 +1,10 @@
-package simulator;
+package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
 import simulator.gates.sequential.Clock;
+import simulator.gates.sequential.flipflops.DFlipFlop;
 import simulator.network.Link;
 import simulator.wrapper.Wrapper;
-import simulator.wrapper.wrappers.DFlipFlop;
 import simulator.wrapper.wrappers.Mux2to1;
 import simulator.wrapper.wrappers.RealDFlipFlop;
 
@@ -32,8 +32,8 @@ output:data which is in flip flop
         Mux2to1 mux1 =new Mux2to1("mux","3x1", getInput(1)
                 , flipFlop.getOutput(0),
                 getInput(2));
-         flipFlop.setInput(1,mux1.getOutput(0));
-         addOutput(flipFlop.getOutput(0));
+        flipFlop.setInput(1,mux1.getOutput(0));
+        addOutput(flipFlop.getOutput(0));
     }
 
     @Override
