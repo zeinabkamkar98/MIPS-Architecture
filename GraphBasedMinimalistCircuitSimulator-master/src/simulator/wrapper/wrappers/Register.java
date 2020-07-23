@@ -2,7 +2,6 @@ package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
 import simulator.gates.sequential.Clock;
-import simulator.gates.sequential.flipflops.DFlipFlop;
 import simulator.network.Link;
 import simulator.wrapper.Wrapper;
 
@@ -18,7 +17,7 @@ public class Register extends Wrapper {//SELECT,NEWDATA
 
         Clock clock = new Clock("CLOCK1", 1000);
 
-        DFlipFlop DFLIPFLOP1 = new DFlipFlop("DFLIPFLOP");
+        simulator.wrapper.wrappers.DFlipFlop DFLIPFLOP1 = new simulator.wrapper.wrappers.DFlipFlop("DFLIPFLOP","2x2");
         Mux2to1 MUX2TO1 = new Mux2to1("MUX2TO1","3X1");
 
 
