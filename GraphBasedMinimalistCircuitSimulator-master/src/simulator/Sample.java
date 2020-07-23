@@ -1,18 +1,18 @@
 //Dedicated to Goli
 
 package simulator;
-
 import simulator.control.Simulator;
 import simulator.gates.combinational.And;
 import simulator.gates.combinational.Memory;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
 import simulator.wrapper.wrappers.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Sample {
+
     public static   Memory memory=new Memory("M!",Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic);
 
     public static Memory getMemory() {
@@ -25,18 +25,19 @@ public class Sample {
 
     public static Clock clock = new Clock("clock",1000);
 
+
     public static void main(String[] args) {
 
         PC pc = new PC("PC", "32X32");
         NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
-        ALU alu=new ALU("alu","68x33");
+        RegisterFile registerfile = new RegisterFile("registerfile","48X64");
+        ALU alu=new ALU("alu","68x33");//output alu mishe address baray data memory
 
         SignExtend signExtend=new SignExtend("signExtend","16x32");
         List<Mux2to1> muxsbeforealu = new ArrayList<>();
         List<Mux2to1> muxsafterdatamem = new ArrayList<>();
-        RegisterFile registerfile = new RegisterFile("registerfile","48X64");
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),nextPcValue.getOutput(4),nextPcValue.getOutput(5),nextPcValue.getOutput(6),nextPcValue.getOutput(7),
@@ -46,21 +47,21 @@ public class Sample {
         );
 
         nextPcValue.addInput(
-
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
                 pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
                 pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
 
+                //instruction[26-0]
                 memory.getOutput(6),memory.getOutput(7),memory.getOutput(8),memory.getOutput(9),memory.getOutput(10),memory.getOutput(11),memory.getOutput(12),memory.getOutput(13),
                 memory.getOutput(14),memory.getOutput(15),memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21),
                 memory.getOutput(22),memory.getOutput(23),memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),
                 memory.getOutput(30),memory.getOutput(31),
 
-                alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)
+                alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)//zero,branch,jump
         );
 
-        //input : instruction[31-26]   //output :  //output[4] MemRead &&& output[5]  MemWrite
+        //input : instruction[31-26]   //output :  output[4] MemRead &&& output[5]MemWrite(data memory)  ///baghie signala controli ro vasel kardim
         controlUnit.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
 
         alucontrolunit.addInput(
@@ -93,10 +94,11 @@ public class Sample {
         );
 
         //input[17-31] === dataii k gharare dar reg neveshte beshe k az data mem miad ya az alu
+        //0=>alu
+        //1=data memory
         for(int i=0;i<32;i++){
             muxsafterdatamem.add(new Mux2to1("mux" + i, "3x1",
-                            //controlUnit.getOutput(2),
-                            Simulator.falseLogic,
+                            controlUnit.getOutput(2),//memtoreg signal(control signal)
                             alu.getOutput(i),Simulator.falseLogic //az data mem baiad biad
                     )
             );
@@ -106,7 +108,6 @@ public class Sample {
             registerfile.addInput(muxsafterdatamem.get(i).getOutput(0));
         }
 
-
         //first alu input
         alu.addInput(
                 registerfile.getOutput(0),registerfile.getOutput(1),registerfile.getOutput(2),registerfile.getOutput(3),registerfile.getOutput(4),registerfile.getOutput(5),registerfile.getOutput(6),registerfile.getOutput(7),
@@ -114,7 +115,7 @@ public class Sample {
                 registerfile.getOutput(16),registerfile.getOutput(17),registerfile.getOutput(18),registerfile.getOutput(19),registerfile.getOutput(20),registerfile.getOutput(21),registerfile.getOutput(22),registerfile.getOutput(23),
                 registerfile.getOutput(24),registerfile.getOutput(25),registerfile.getOutput(26),registerfile.getOutput(27),registerfile.getOutput(28),registerfile.getOutput(29),registerfile.getOutput(30),registerfile.getOutput(31)
                 );
-        //second alu input
+        //second alu input(select beewen imediat and register)
         signExtend.addInput(
                 memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21), memory.getOutput(22),memory.getOutput(23),
                 memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29), memory.getOutput(30),memory.getOutput(31)
@@ -122,7 +123,7 @@ public class Sample {
 
         for(int i=0;i<32;i++){
             muxsbeforealu.add(new Mux2to1("mux" + i, "3x1",
-                            controlUnit.getOutput(1),
+                            controlUnit.getOutput(1),//RegDestination(control signal)
                             registerfile.getOutput(i+32),signExtend.getOutput(i)
                     )
             );
@@ -131,11 +132,18 @@ public class Sample {
             alu.addInput(muxsbeforealu.get(i).getOutput(0));
         }
 
-
         //alu control signal
         alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
 
-        Simulator.debugger.addTrackItem(controlUnit,alucontrolunit,alu,registerfile);
+        //add alu output to data memory address
+
+        //data memory ro bezar inja vali khodesh ro bala tarif kon pish baghishon
+        //
+        //
+        //
+        //
+
+        Simulator.debugger.addTrackItem(alu);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }
