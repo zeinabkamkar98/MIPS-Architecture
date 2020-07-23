@@ -26,6 +26,7 @@ public class Sample {
     public static Clock clock = new Clock("clock",1000);
 
     public static void main(String[] args) {
+
 //        ALU alu=new ALU("alu","68x33");
 //        alu.addInput(
 //
@@ -47,6 +48,7 @@ public class Sample {
         PC myPC = new PC("myPC", "32X32");
         NextPcValue pc=new NextPcValue("updatePC","61x32");
 
+
         myPC.addInput(
 
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
@@ -55,15 +57,6 @@ public class Sample {
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31)
 
                 );
-//        myPC.addInput(Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
-//                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic
-//        );
 
         Simulator.debugger.addTrackItem(myPC);
         pc.addInput(
@@ -71,8 +64,7 @@ public class Sample {
                 myPC.getOutput(8),myPC.getOutput(9),myPC.getOutput(10),myPC.getOutput(11),myPC.getOutput(12),myPC.getOutput(13),myPC.getOutput(14),myPC.getOutput(15),
                 myPC.getOutput(16),myPC.getOutput(17),myPC.getOutput(18),myPC.getOutput(19),myPC.getOutput(20),myPC.getOutput(21),myPC.getOutput(22),myPC.getOutput(23),
                 myPC.getOutput(24),myPC.getOutput(25),myPC.getOutput(26),myPC.getOutput(27),myPC.getOutput(28),myPC.getOutput(29),myPC.getOutput(30),myPC.getOutput(31),
-
-
+                
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
@@ -85,7 +77,6 @@ public class Sample {
         Simulator.debugger.addTrackItem(myPC,pc);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
-        System.out.println("hello");
     }
 
 
