@@ -14,11 +14,13 @@ out[0:31]:Data,which is read from memory
 
 */
 public class Memory extends Node {
-    private Boolean[] memory;
+    private Boolean[] memoryP1;
+    private Boolean[] memoryP2;
 
     public Memory(String label, Link... links) {
         super(label, links);
-        memory = new Boolean[65536];
+        memoryP1 = new Boolean[65536];
+        memoryP2 = new Boolean[65536];
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
@@ -37,33 +39,49 @@ public class Memory extends Node {
     }
 
     private void memoryWrite() {
-        for(int i = 34; i < 66; ++i) {
-            memory[address() + i - 34] = getInput(i).getSignal();
-        }
+        if (address()<65536+65-34)
+            for(int i = 34; i < 66; ++i) {
+                memoryP1[address() + i - 34] = getInput(i).getSignal();
+            }
+        else
+            for(int i = 34; i < 66; ++i) {
+                memoryP2[address() + i - 34] = getInput(i).getSignal();
+            }
+
     }
 
     private void memoryRead(){
-        for (int i = 0; i < 32; ++i) {
-            getOutput(i).setSignal(memory[address() + i]);
-        }
+        if (address()<65536+65-34)
+            for (int i = 0; i < 32; ++i) {
+                getOutput(i).setSignal(memoryP1[address() + i]);
+            }
+        else
+            for (int i = 0; i < 32; ++i) {
+                getOutput(i).setSignal(memoryP2[address() + i]);
+            }
     }
 
     @Override
     public void evaluate() {
-        if (getInput(1).getSignal()) {
+        if (getInput(1).getSignal()&&!getInput(0).getSignal()) {
             memoryWrite();
         } else
-        if (getInput(1).getSignal()) {
+        if (getInput(0).getSignal()&&!(getInput(1).getSignal())) {
 
             memoryRead();
         }
     }
 
-    public void setMemory(Boolean[] memory) {
-        this.memory = memory;
+    public void setMemory(Boolean[] memory1,Boolean[] memory2) {
+        this.memoryP1 = memory1;
+        this.memoryP2 = memory2;
+
     }
 
-    public Boolean[] getMemory() {
-        return memory;
+    public Boolean[] getMemory1() {
+        return memoryP1;
+    }
+    public Boolean[] getMemoryP2() {
+        return memoryP2;
     }
 }
