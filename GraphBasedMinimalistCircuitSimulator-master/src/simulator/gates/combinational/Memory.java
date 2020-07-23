@@ -18,7 +18,7 @@ public class Memory extends Node {
 
     public Memory(String label, Link... links) {
         super(label, links);
-        memory = new Boolean[(int) (32*Math.pow(2,32))];
+        memory = new Boolean[65536];
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
