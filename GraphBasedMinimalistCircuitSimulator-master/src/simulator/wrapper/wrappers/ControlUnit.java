@@ -7,8 +7,8 @@ import simulator.network.Link;
 import simulator.wrapper.Wrapper;
 
 public class ControlUnit extends Wrapper {
-//OP0//OP1//OP2//OP3...//OP5  110001
-//RegDST//ALUSRC//MemToReg//RegWrite//MemRead//MemWrite//Branch//ALUOP1//ALUOP2
+//OP0//OP1//OP2//OP3...//OP5
+//RegDST//ALUSRC//MemToReg//RegWrite//MemRead//MemWrite//Branch//ALUOP1//ALUOP2//Jump
     public ControlUnit(String label, String stream, Link... links) {
         super(label, stream, links);
     }
@@ -18,6 +18,7 @@ public class ControlUnit extends Wrapper {
         And AND2 = new And("And2");
         And AND3 = new And("And3");
         And AND4 = new And("And4");
+        And AND5 = new And("And5");
 
         Or OR1 = new Or("Or1");
         Or OR2 = new Or("Or2");
@@ -40,11 +41,12 @@ public class ControlUnit extends Wrapper {
         AND2.addInput(getInput(5), NOT4.getOutput(0), NOT3.getOutput(0), NOT2.getOutput(0), getInput(1), getInput(0));
         AND3.addInput(getInput(5), NOT4.getOutput(0), getInput(3), NOT2.getOutput(0), getInput(1), getInput(0));
         AND4.addInput(NOT5.getOutput(0), NOT4.getOutput(0), NOT3.getOutput(0), getInput(2), NOT1.getOutput(0), NOT0.getOutput(0));
+        AND5.addInput(NOT5.getOutput(0),getInput(4),NOT3.getOutput(0),NOT2.getOutput(0),NOT1.getOutput(0),NOT0.getOutput(0));
 
         OR1.addInput(AND2.getOutput(0), AND3.getOutput(0));
         OR2.addInput(AND1.getOutput(0), AND2.getOutput(0));
 
-        addOutput(AND1.getOutput(0), OR1.getOutput(0), AND2.getOutput(0), OR2.getOutput(0),AND2.getOutput(0), AND3.getOutput(0), AND4.getOutput(0), AND1.getOutput(0), AND4.getOutput(0));
+        addOutput(AND1.getOutput(0), OR1.getOutput(0), AND2.getOutput(0), OR2.getOutput(0),AND2.getOutput(0), AND3.getOutput(0), AND4.getOutput(0), AND1.getOutput(0), AND4.getOutput(0),AND5.getOutput(0));
 
     }
 }

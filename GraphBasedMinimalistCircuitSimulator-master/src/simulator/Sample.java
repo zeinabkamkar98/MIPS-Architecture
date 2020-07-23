@@ -91,12 +91,11 @@ public class Sample {
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),
                 pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
 
-//        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X9");
-//    CONTROLUNIT.addInput(I_Memory.getOutput(5), I_Memory.getOutput(4),I_Memory.getOutput(3),I_Memory.getOutput(2),I_Memory.getOutput(1),I_Memory.getOutput(0));
-//
+        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X10");
+        CONTROLUNIT.addInput(Simulator.falseLogic, Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic);
 
-        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X9");
-        CONTROLUNIT.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
+//        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X10");
+//        CONTROLUNIT.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
 //        RegisterFile REGISTERFILE = new RegisterFile("REGISTERFILE","48X64");
 //        REGISTERFILE.addInput(
 //                Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
