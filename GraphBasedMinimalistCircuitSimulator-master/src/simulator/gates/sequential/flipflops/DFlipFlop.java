@@ -1,44 +1,44 @@
-package simulator.gates.sequential.flipflops;
+package simulator.wrapper.wrappers;
 
+import simulator.gates.combinational.Nand;
 import simulator.network.Link;
-import simulator.network.Node;
+import simulator.wrapper.Wrapper;
 
-public class DFlipFlop extends Node implements FlipFlop {
-    private Boolean memory;
-    private Boolean edgeFlag;
-
-    public DFlipFlop(String label, Link... links) {
-        super(label, links);
-        edgeFlag = true;
-        memory = false;
-        addOutputLink(false);
-        addOutputLink(true);
+/*a data flip-flop
+ * in:
+ *   0 : clock signal
+ *   1 : data signal
+ * out:
+ *   0 : q
+ *   1 : q-bar */
+public class DFlipFlop extends Wrapper {
+    public DFlipFlop(String label, String stream, Link... links) {
+        super(label, stream, links);
     }
 
     @Override
-    public void setOutput() {
-        outputs.get(0).setSignal(memory);
-        outputs.get(1).setSignal(!memory);
-    }
+    public void initialize() {
+        Nand n1 = new Nand("NAND1");
+        Nand n2 = new Nand("NAND2");
+        Nand n3 = new Nand("NAND3");
+        Nand n4 = new Nand("NAND4");
+        Nand n5 = new Nand("NAND5");
+        Nand n6 = new Nand("NAND6");
 
-    @Override
-    public void loadMemory() {
-        memory = getInput(1).getSignal();
-    }
+        n1.setLatch(true);
+        n2.setLatch(true);
+        n3.setLatch(true);
+        n4.setLatch(true);
+        n5.setLatch(true);
+        n6.setLatch(true);
 
-    @Override
-    public void evaluate() {
-        if(getInput(0).getSignal() && edgeFlag) {
-            if (getInput(1).getSource() instanceof FlipFlop) {
-                setOutput();
-                loadMemory();
-            } else {
-                loadMemory();
-                setOutput();
-            }
-            edgeFlag = false;
-        } else if(!getInput(0).getSignal() && !edgeFlag) {
-            edgeFlag = true;
-        }
+        n1.addInput(n4.getOutput(0), n2.getOutput(0));
+        n2.addInput(getInput(0), n1.getOutput(0));
+        n3.addInput(n2.getOutput(0), getInput(0), n4.getOutput(0));
+        n4.addInput(n3.getOutput(0), getInput(1));
+        n5.addInput(n2.getOutput(0), n6.getOutput(0));
+        n6.addInput(n3.getOutput(0), n5.getOutput(0));
+
+        addOutput(n5.getOutput(0), n6.getOutput(0));
     }
 }

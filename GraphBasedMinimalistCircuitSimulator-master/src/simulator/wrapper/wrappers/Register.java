@@ -2,9 +2,10 @@ package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
 import simulator.gates.sequential.Clock;
-import simulator.gates.sequential.flipflops.DFlipFlop;
 import simulator.network.Link;
 import simulator.wrapper.Wrapper;
+import simulator.wrapper.wrappers.DFlipFlop;
+
 
 public class Register extends Wrapper {//SELECT,NEWDATA
     public Register(String label, String stream, Link... links) {

@@ -1,10 +1,12 @@
-package simulator.wrapper;
+package simulator.wrapper.wrappers;
 
 import simulator.control.Simulator;
 import simulator.gates.combinational.And;
 import simulator.gates.combinational.Not;
 import simulator.gates.combinational.Or;
 import simulator.network.Link;
+import simulator.wrapper.Wrapper;
+
 /**
  * Input[0]:Aluop1
  * Input[1]:Aluop2
