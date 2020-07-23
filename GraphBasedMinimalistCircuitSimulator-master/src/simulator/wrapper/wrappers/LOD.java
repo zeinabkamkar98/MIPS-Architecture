@@ -9,7 +9,7 @@ import simulator.wrapper.Wrapper;
 /**
  * input0,1:Signal
  * input2,514:write data
-* */
+ * */
 public class LOD extends Wrapper {
     private SubCache[] LOD;
     public LOD(String label, String stream, Link... links) {
