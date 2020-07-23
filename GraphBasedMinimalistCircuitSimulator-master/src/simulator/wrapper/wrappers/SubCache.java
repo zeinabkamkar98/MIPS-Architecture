@@ -1,12 +1,10 @@
 package simulator;
 
 import simulator.control.Simulator;
-import simulator.gates.sequential.Clock;
 import simulator.network.Link;
 import simulator.wrapper.Wrapper;
 import simulator.wrapper.wrappers.DFlipFlop;
 import simulator.wrapper.wrappers.Mux2to1;
-import simulator.wrapper.wrappers.RealDFlipFlop;
 
 
 public class SubCache extends Wrapper {
