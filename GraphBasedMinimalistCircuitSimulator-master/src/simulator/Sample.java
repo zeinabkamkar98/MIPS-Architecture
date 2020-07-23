@@ -86,15 +86,35 @@ public class Sample {
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic);
+                pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),
+                pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
+                pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),
+                pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
 
+//        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X9");
+//    CONTROLUNIT.addInput(I_Memory.getOutput(5), I_Memory.getOutput(4),I_Memory.getOutput(3),I_Memory.getOutput(2),I_Memory.getOutput(1),I_Memory.getOutput(0));
+//
 
+        ControlUnit CONTROLUNIT = new ControlUnit("CONTROLUNIT", "6X9");
+        CONTROLUNIT.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
+//        RegisterFile REGISTERFILE = new RegisterFile("REGISTERFILE","48X64");
+//        REGISTERFILE.addInput(
+//                Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
+//                Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic,
+//                Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic,
+//                Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic,
+//                Simulator.falseLogic, Simulator.falseLogic, Simulator.trueLogic, Simulator.trueLogic
+//                );
 
-        memory.evaluate();
-        Simulator.debugger.addTrackItem(pc,nextPcValue,memory);
+//        memory.evaluate();
+        Simulator.debugger.addTrackItem(pc,nextPcValue,memory,CONTROLUNIT);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }

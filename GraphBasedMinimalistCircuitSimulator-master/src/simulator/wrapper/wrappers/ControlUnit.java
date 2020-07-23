@@ -7,7 +7,7 @@ import simulator.network.Link;
 import simulator.wrapper.Wrapper;
 
 public class ControlUnit extends Wrapper {
-//OP0//OP1//OP2//OP3...//OP5
+//OP0//OP1//OP2//OP3...//OP5  110001
 //RegDST//ALUSRC//MemToReg//RegWrite//MemRead//MemWrite//Branch//ALUOP1//ALUOP2
     public ControlUnit(String label, String stream, Link... links) {
         super(label, stream, links);
