@@ -4,8 +4,10 @@ package simulator;
 import simulator.control.Simulator;
 import simulator.gates.combinational.And;
 import simulator.gates.combinational.Memory;
+import simulator.gates.combinational.Not;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
+import simulator.wrapper.Cache;
 import simulator.wrapper.wrappers.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 
 public class Sample {
 
-    public static   Memory memory=new Memory("M!",Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic);
+    public static   Memory memory=new Memory("M!");
 
     public static Memory getMemory() {
         return memory;
@@ -28,21 +30,26 @@ public class Sample {
 
     public static void main(String[] args) {
 
+//        memory.evaluate();
+//        Cache cache=new Cache("C!",
+//                "65x32",
+//                memory,new Clock("CLK",100),
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic);
         PC pc = new PC("PC", "32X32");
-        NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");//byte addressable
-//        NextPcValueBit nextPcValue=new NextPcValueBit("updatePC","61x32");//bit addressable
-
+        NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
-
         RegisterFile registerfile = new RegisterFile("registerfile","48X64");
-
         ALU alu=new ALU("alu","68x33");//output alu mishe address baray data memory
+//        Cache DCache=new Cache("DATACACHE","65x32",memory,clock);
+//        Cache ICache=new Cache("IATACACHE","65x32",memory,clock);
 
         SignExtend signExtend=new SignExtend("signExtend","16x32");
-
         List<Mux2to1> muxsbeforealu = new ArrayList<>();
         List<Mux2to1> muxsafterdatamem = new ArrayList<>();
+        List<Mux2to1> muxBeforeMem1 = new ArrayList<>();
+        List<Mux2to1> muxBeforeMem2 = new ArrayList<>();
+
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),nextPcValue.getOutput(4),nextPcValue.getOutput(5),nextPcValue.getOutput(6),nextPcValue.getOutput(7),
@@ -51,6 +58,22 @@ public class Sample {
                 nextPcValue.getOutput(24),nextPcValue.getOutput(25),nextPcValue.getOutput(26),nextPcValue.getOutput(27),nextPcValue.getOutput(28),nextPcValue.getOutput(29),nextPcValue.getOutput(30),nextPcValue.getOutput(31)
         );
 
+        memory.addInput(controlUnit.getOutput(4));
+        memory.addInput(controlUnit.getOutput(5));
+
+
+        for (int i = 0; i <32 ; i++) {
+
+            muxBeforeMem1.add(new Mux2to1("m"+i,"3x1",new And("a",controlUnit.getOutput(5),new Not("n",controlUnit.getOutput(4)).getOutput(0)).getOutput(0),pc.getOutput(0),
+                    alu.getOutput(0)));
+            memory.addInput(muxBeforeMem1.get(i).getOutput(0));
+        }
+        for (int i = 0; i <32 ; i++) {
+
+            muxBeforeMem2.add(new Mux2to1("m"+i,"3x1",new And("a",controlUnit.getOutput(5),new Not("n",controlUnit.getOutput(4)).getOutput(0)).getOutput(0),Simulator.falseLogic,
+                    registerfile.getOutput(i)));
+            memory.addInput(muxBeforeMem2.get(i).getOutput(0));
+        }
         nextPcValue.addInput(
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
                 pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
@@ -148,7 +171,7 @@ public class Sample {
         //
         //
 
-        Simulator.debugger.addTrackItem(pc,nextPcValue);
+        Simulator.debugger.addTrackItem(alu);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }

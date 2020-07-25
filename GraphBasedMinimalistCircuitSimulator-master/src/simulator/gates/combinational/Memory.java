@@ -28,34 +28,35 @@ public class Memory extends Node {
 
     private int address() {
         int temp = 0;
-        for (int i = 2; i < 34; ++i) {
+        for (int i = 18; i < 34; ++i) {
             if(inputs.size() > i) {
                 if(getInput(i).getSignal()) {
                     temp += Math.pow(2, 33 - i);
                 }
             }
         }
+        if (temp==214748364) return 0;
         return temp;
     }
 
     private void memoryWrite() {
-        if (address()<65536+65-34)
+        if (address()<65536-32)
             for(int i = 34; i < 66; ++i) {
                 memoryP1[address() + i - 34] = getInput(i).getSignal();
             }
         else{for(int i = 34; i < 66; ++i) {
-            memoryP2[address() + i - 34] = getInput(i).getSignal();
+            memoryP2[address()-65536 + i ] = getInput(i).getSignal();
         }}
     }
 
     private void memoryRead(){
-        if (address()<65536+65-34)
+        if (address()<65536)
             for (int i = 0; i < 32; ++i) {
                 getOutput(i).setSignal(memoryP1[address() + i]);
             }
         else{
             for (int i = 0; i < 32; ++i) {
-                getOutput(i).setSignal(memoryP2[address() + i]);}
+                getOutput(i).setSignal(memoryP2[address()-65536 + i]);}
 
         }
     }
