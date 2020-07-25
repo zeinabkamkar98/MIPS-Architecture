@@ -29,13 +29,18 @@ public class Sample {
     public static void main(String[] args) {
 
         PC pc = new PC("PC", "32X32");
-        NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
+        NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");//byte addressable
+//        NextPcValueBit nextPcValue=new NextPcValueBit("updatePC","61x32");//bit addressable
+
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
+
         RegisterFile registerfile = new RegisterFile("registerfile","48X64");
+
         ALU alu=new ALU("alu","68x33");//output alu mishe address baray data memory
 
         SignExtend signExtend=new SignExtend("signExtend","16x32");
+
         List<Mux2to1> muxsbeforealu = new ArrayList<>();
         List<Mux2to1> muxsafterdatamem = new ArrayList<>();
 
@@ -143,7 +148,7 @@ public class Sample {
         //
         //
 
-        Simulator.debugger.addTrackItem(alu);
+        Simulator.debugger.addTrackItem(pc,nextPcValue);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }
