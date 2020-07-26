@@ -59,6 +59,7 @@ public class Memory extends Node {
                 }
             }
         }
+        System.out.println(temp);
         if (temp==214748364) return 0;
         return temp;
     }
