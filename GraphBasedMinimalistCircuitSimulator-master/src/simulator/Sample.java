@@ -19,7 +19,7 @@ public class Sample {
 
         PC pc=new PC("pc","32x32");
 
-        NextPcValue nextPcValue=new NextPcValue("newPc","61x32");
+        NextPcValueBit nextPcValue=new NextPcValueBit("newPc","61x32");
 
         Memory I_memory= new Memory("I_MEMORY");
 
@@ -53,16 +53,16 @@ public class Sample {
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,
 
+                //alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)//zero,branch,jump####################################################################
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
         );
 
         I_memory.addInput(Simulator.falseLogic,
 
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-
+                pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),
+                pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
+                pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),
+                pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
 
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
