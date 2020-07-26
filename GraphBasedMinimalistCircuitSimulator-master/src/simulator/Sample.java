@@ -80,7 +80,7 @@ public class Sample {
         }
         for (int i = 0; i <32 ; i++) {
 
-            D_memory.addInput(registerfile.getInput(32+i));
+            D_memory.addInput(registerfile.getOutput(32+i));
 
         }
         I_memory.addInput(Simulator.trueLogic);
