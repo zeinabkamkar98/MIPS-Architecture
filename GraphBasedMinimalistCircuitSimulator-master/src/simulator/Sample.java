@@ -7,7 +7,6 @@ import simulator.gates.combinational.Memory;
 import simulator.gates.combinational.Not;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
-import simulator.wrapper.Cache;
 import simulator.wrapper.wrappers.*;
 import java.util.ArrayList;
 import java.util.List;
