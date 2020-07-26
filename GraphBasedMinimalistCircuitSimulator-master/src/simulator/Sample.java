@@ -28,7 +28,15 @@ public class Sample {
 
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
 
-        
+        ALU alu=new ALU("alu","68x33");
+
+//        RegisterFile registerfile = new RegisterFile("registerfile","48X64");
+
+        SignExtend signExtend=new SignExtend("signExtend","16x32");
+
+        List<Mux2to1> muxsbeforealu = new ArrayList<>();
+
+
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),
@@ -91,7 +99,64 @@ public class Sample {
                 I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28)
                 ,I_memory.getOutput(29),I_memory.getOutput(30),I_memory.getOutput(31));
 
-        Simulator.debugger.addTrackItem(I_memory,alucontrolunit);
+        signExtend.addInput(
+                I_memory.getOutput(16),I_memory.getOutput(17),I_memory.getOutput(18),I_memory.getOutput(19),
+                I_memory.getOutput(20),I_memory.getOutput(21), I_memory.getOutput(22),I_memory.getOutput(23),
+                I_memory.getOutput(24),I_memory.getOutput(25),I_memory.getOutput(26),I_memory.getOutput(27),
+                I_memory.getOutput(28),I_memory.getOutput(29), I_memory.getOutput(30),I_memory.getOutput(31)
+        );
+
+//        for(int i=0;i<32;i++){
+//            muxsbeforealu.add(new Mux2to1("mux" + i, "3x1",
+//                            controlunit.getOutput(1),
+//                            registerfile.getOutput(i+32),signExtend.getOutput(i)
+//                    )
+//            );
+//        }
+
+//        alu.addInput(
+//                registerfile.getOutput(0),registerfile.getOutput(1),registerfile.getOutput(2),registerfile.getOutput(3),
+//                registerfile.getOutput(4),registerfile.getOutput(5),registerfile.getOutput(6),registerfile.getOutput(7),
+//                registerfile.getOutput(8),registerfile.getOutput(9),registerfile.getOutput(10),registerfile.getOutput(11),
+//                registerfile.getOutput(12),registerfile.getOutput(13),registerfile.getOutput(14),registerfile.getOutput(15),
+//                registerfile.getOutput(16),registerfile.getOutput(17),registerfile.getOutput(18),registerfile.getOutput(19),
+//                registerfile.getOutput(20),registerfile.getOutput(21),registerfile.getOutput(22),registerfile.getOutput(23),
+//                registerfile.getOutput(24),registerfile.getOutput(25),registerfile.getOutput(26),registerfile.getOutput(27),
+//                registerfile.getOutput(28),registerfile.getOutput(29),registerfile.getOutput(30),registerfile.getOutput(31)
+//        );
+//
+//        for (int i=0;i<32;i++){
+//            alu.addInput(muxsbeforealu.get(i).getOutput(0));
+//        }
+
+        alu.addInput(
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,
+
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.trueLogic
+
+        );
+        
+        alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
+
+        Simulator.debugger.addTrackItem(alucontrolunit,I_memory,signExtend,alu);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
