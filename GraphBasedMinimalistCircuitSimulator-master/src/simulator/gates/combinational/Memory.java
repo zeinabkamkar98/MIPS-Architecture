@@ -2,6 +2,9 @@ package simulator.gates.combinational;
 
 import simulator.network.Link;
 import simulator.network.Node;
+
+import java.util.Arrays;
+
 /*
 Inputs:
 in[0]:read signal
@@ -21,6 +24,8 @@ public class Memory extends Node {
         super(label, links);
         memoryP1 = new Boolean[65536];
         memoryP2 = new Boolean[65536];
+        Arrays.fill(memoryP1,false);
+        Arrays.fill(memoryP2,false);
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
