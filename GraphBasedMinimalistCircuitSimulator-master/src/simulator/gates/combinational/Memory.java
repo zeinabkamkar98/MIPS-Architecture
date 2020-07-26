@@ -1,3 +1,7 @@
+package simulator.gates.combinational;
+import simulator.network.Link;
+import simulator.network.Node;
+
 public class Memory extends Node {
     private Boolean[] memory;
 

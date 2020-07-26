@@ -3,6 +3,8 @@ package simulator.gates.combinational;
 import simulator.network.Link;
 import simulator.network.Node;
 
+import java.util.Arrays;
+
 /* a byte-addressable memory with 4byte-word with 16bit address bus
  *   in:
  *       0 : write signal
@@ -16,6 +18,9 @@ public class ByteMemory extends Node {
     public ByteMemory(String label, Link... links) {
         super(label, links);
         memory = new Boolean[65536][8];
+        for(int i=0;i<65536;i++){
+            Arrays.fill(memory[i],false);
+        }
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }

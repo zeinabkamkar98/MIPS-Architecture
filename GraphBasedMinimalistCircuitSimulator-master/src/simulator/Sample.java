@@ -3,7 +3,7 @@
 package simulator;
 import simulator.control.Simulator;
 import simulator.gates.combinational.And;
-import simulator.gates.combinational.Memory;
+import simulator.gates.combinational.ByteMemory;
 import simulator.gates.combinational.Not;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Sample {
 
-    public static   ByteMemory I_memory=new Memory("I_MEMORY");
+    public static ByteMemory I_memory=new ByteMemory("I_MEMORY");
 //    public static   Memory D_memory=new Memory("MD_MEMORY");
 
     public static ByteMemory getMemory() {
@@ -48,7 +48,7 @@ public class Sample {
 //                memory,new Clock("CLK",100),
 //                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic);
         PC pc = new PC("PC", "32X32");
-        NextPcValue nextPcValue=new NextPcValueBit("updatePC","61x32");
+        NextPcValue nextPcValue=new NextPcValue("updatePC","61x32");
         ControlUnit controlUnit = new ControlUnit("CONTROLUNIT", "6X10");
         ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
         RegisterFile registerfile = new RegisterFile("registerfile","48X64");
