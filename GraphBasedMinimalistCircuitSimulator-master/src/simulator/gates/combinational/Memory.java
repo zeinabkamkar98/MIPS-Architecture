@@ -50,6 +50,7 @@ public class Memory extends Node {
         }
     }
 
+
     private void memoryRead(){
         int address = address();
 
