@@ -21,20 +21,27 @@ public class Memory extends Node {
         Arrays.fill(memory,false);
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
-            memory[i+32]=true;
-            memory[i+64]=true;
+//            memory[i+32]=true;
+//            memory[i+64]=true;
         }
-        memory[1]=true;
-        memory[2]=true;
-        memory[3]=true;
-        memory[4]=true;
-        memory[5]=true;
-        memory[40]=true;
-        memory[41]=true;
-        memory[42]=true;
-        memory[43]=true;
-        memory[44]=true;
-        memory[45]=true;
+        memory[7]=true;
+        memory[9]=true;
+        memory[12]=true;
+        memory[14]=true;
+        memory[15]=true;
+        memory[17]=true;
+        memory[20]=true;
+        memory[26]=true;
+        memory[7+32]=true;
+        memory[10+32]=true;
+        memory[12+32]=true;
+        memory[14+32]=true;
+        memory[15+32]=true;
+        memory[17+32]=true;
+        memory[19+32]=true;
+        memory[26+32]=true;
+        memory[28+32]=true;
+        memory[30+32]=true;
 
 
     }

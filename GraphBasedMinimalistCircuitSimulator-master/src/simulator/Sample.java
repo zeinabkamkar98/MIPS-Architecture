@@ -6,6 +6,7 @@ import simulator.gates.combinational.And;
 import simulator.gates.combinational.Memory;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
+import simulator.wrapper.ALUControlUnit;
 import simulator.wrapper.wrappers.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,12 @@ public class Sample {
         NextPcValueBit nextPcValue=new NextPcValueBit("newPc","61x32");
 
         Memory I_memory= new Memory("I_MEMORY");
+
+        ControlUnit controlunit = new ControlUnit("controlunit","6X10");
+
+        ALUControlUnit alucontrolunit = new ALUControlUnit("alucontrolunit", "8X4");
+
+        
 
         pc.addInput(
                 nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),
@@ -76,7 +83,15 @@ public class Sample {
 
         );
 
-        Simulator.debugger.addTrackItem(pc,nextPcValue,I_memory);
+        controlunit.addInput(I_memory.getOutput(5),I_memory.getOutput(4),I_memory.getOutput(3)
+                            ,I_memory.getOutput(2),I_memory.getOutput(1),I_memory.getOutput(0));
+
+
+        alucontrolunit.addInput(controlunit.getOutput(7),controlunit.getOutput(8),
+                I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28)
+                ,I_memory.getOutput(29),I_memory.getOutput(30),I_memory.getOutput(31));
+
+        Simulator.debugger.addTrackItem(I_memory,alucontrolunit);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
