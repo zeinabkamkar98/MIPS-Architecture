@@ -2,11 +2,9 @@
 
 package simulator;
 import simulator.control.Simulator;
-import simulator.gates.combinational.And;
 import simulator.gates.combinational.ByteMemory;
-import simulator.gates.combinational.Not;
+import simulator.gates.combinational.Memory;
 import simulator.gates.sequential.Clock;
-import simulator.network.Link;
 import simulator.wrapper.wrappers.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +12,19 @@ import java.util.List;
 
 public class Sample {
 
-    public static ByteMemory I_memory=new ByteMemory("I_MEMORY");
 //    public static   Memory D_memory=new Memory("MD_MEMORY");
 
-    public static ByteMemory getMemory() {
-        return I_memory;
-    }
-
-    public static ByteMemory getI_Memory() {
-        return I_memory;
-    }
-
-    public static void setI_Memory(ByteMemory memory) {
-        Sample.I_memory = memory;
-    }
+//    public static Memory getMemory() {
+//        return I_memory;
+//    }
+//
+//    public static Memory getI_Memory() {
+//        return I_memory;
+//    }
+//
+//    public static void setI_Memory(Memory memory) {
+//        Sample.I_memory = memory;
+//    }
 
 //    public static Memory getD_memory() {
 //        return D_memory;
@@ -41,6 +38,7 @@ public class Sample {
 
 
     public static void main(String[] args) {
+         Memory I_memory= new Memory("I_MEMORY");
 
 //        memory.evaluate();
 //        Cache cache=new Cache("C!",
@@ -63,11 +61,24 @@ public class Sample {
         List<Mux2to1> muxBeforeMem2 = new ArrayList<>();
 
 
+        Adder adder=new Adder("1","64x32", pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
+                pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
+                pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
+                pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+                );
         pc.addInput(
-                nextPcValue.getOutput(0),nextPcValue.getOutput(1),nextPcValue.getOutput(2),nextPcValue.getOutput(3),nextPcValue.getOutput(4),nextPcValue.getOutput(5),nextPcValue.getOutput(6),nextPcValue.getOutput(7),
-                nextPcValue.getOutput(8),nextPcValue.getOutput(9),nextPcValue.getOutput(10),nextPcValue.getOutput(11),nextPcValue.getOutput(12),nextPcValue.getOutput(13),nextPcValue.getOutput(14),nextPcValue.getOutput(15),
-                nextPcValue.getOutput(16),nextPcValue.getOutput(17),nextPcValue.getOutput(18),nextPcValue.getOutput(19),nextPcValue.getOutput(20),nextPcValue.getOutput(21),nextPcValue.getOutput(22),nextPcValue.getOutput(23),
-                nextPcValue.getOutput(24),nextPcValue.getOutput(25),nextPcValue.getOutput(26),nextPcValue.getOutput(27),nextPcValue.getOutput(28),nextPcValue.getOutput(29),nextPcValue.getOutput(30),nextPcValue.getOutput(31)
+                adder.getOutput(0),adder.getOutput(1),adder.getOutput(2),adder.getOutput(3),adder.getOutput(4),adder.getOutput(5),adder.getOutput(6),adder.getOutput(7),
+                adder.getOutput(8),adder.getOutput(9),adder.getOutput(10),adder.getOutput(11),adder.getOutput(12),adder.getOutput(13),adder.getOutput(14),adder.getOutput(15),
+                adder.getOutput(16),adder.getOutput(17),adder.getOutput(18),adder.getOutput(19),adder.getOutput(20),adder.getOutput(21),adder.getOutput(22),adder.getOutput(23),
+                adder.getOutput(24),adder.getOutput(25),adder.getOutput(26),adder.getOutput(27),adder.getOutput(28),adder.getOutput(29),adder.getOutput(30),adder.getOutput(31)
         );
 //
 //        D_memory.addInput(controlUnit.getOutput(4));
@@ -190,7 +201,7 @@ public class Sample {
         //
         //
 
-        Simulator.debugger.addTrackItem(alu);
+        Simulator.debugger.addTrackItem(I_memory);
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
     }

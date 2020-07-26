@@ -18,6 +18,9 @@ public class ByteMemory extends Node {
     public ByteMemory(String label, Link... links) {
         super(label, links);
         memory = new Boolean[65536][8];
+        for(int i=0;i<65536;i++){
+            Arrays.fill(memory[i],false);
+        }
         memory[0][7]=true;
         memory[9/8][9%8]=true;
         memory[12/8][12%8]=true;
@@ -35,9 +38,7 @@ public class ByteMemory extends Node {
         memory[52/8][52%8]=true;
         memory[58/8][58%8]=true;
 
-        for(int i=0;i<65536;i++){
-            Arrays.fill(memory[i],false);
-        }
+
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
