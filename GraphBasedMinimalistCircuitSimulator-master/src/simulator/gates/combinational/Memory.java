@@ -59,7 +59,6 @@ public class Memory extends Node {
                 }
             }
         }
-        System.out.println(temp);
         if (temp==214748364) return 0;
         return temp;
     }
@@ -88,6 +87,10 @@ public class Memory extends Node {
 
     @Override
     public void evaluate() {
+        for(int i=0;i<34;i++){
+            System.out.println(getInput(i).getSignal());
+        }
+        System.out.println("############################################################################################");
         if (getInput(1).getSignal()) {
             memoryWrite();
         } else

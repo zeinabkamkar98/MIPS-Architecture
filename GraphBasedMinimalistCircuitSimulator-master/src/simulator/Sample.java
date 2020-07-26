@@ -15,7 +15,7 @@ import java.util.List;
 public class Sample {
 
     public static   Memory I_memory=new Memory("I_MEMORY");
-    public static   Memory D_memory=new Memory("MD_MEMORY");
+//    public static   Memory D_memory=new Memory("MD_MEMORY");
 
     public static Memory getMemory() {
         return I_memory;
@@ -29,13 +29,13 @@ public class Sample {
         Sample.I_memory = memory;
     }
 
-    public static Memory getD_memory() {
-        return D_memory;
-    }
-
-    public static void setD_memory(Memory d_memory) {
-        D_memory = d_memory;
-    }
+//    public static Memory getD_memory() {
+//        return D_memory;
+//    }
+//
+//    public static void setD_memory(Memory d_memory) {
+//        D_memory = d_memory;
+//    }
 
     public static Clock clock = new Clock("clock",1000);
 
@@ -69,26 +69,26 @@ public class Sample {
                 nextPcValue.getOutput(16),nextPcValue.getOutput(17),nextPcValue.getOutput(18),nextPcValue.getOutput(19),nextPcValue.getOutput(20),nextPcValue.getOutput(21),nextPcValue.getOutput(22),nextPcValue.getOutput(23),
                 nextPcValue.getOutput(24),nextPcValue.getOutput(25),nextPcValue.getOutput(26),nextPcValue.getOutput(27),nextPcValue.getOutput(28),nextPcValue.getOutput(29),nextPcValue.getOutput(30),nextPcValue.getOutput(31)
         );
+//
+//        D_memory.addInput(controlUnit.getOutput(4));
+//        D_memory.addInput(controlUnit.getOutput(5));
 
-        D_memory.addInput(controlUnit.getOutput(4));
-        D_memory.addInput(controlUnit.getOutput(5));
 
-
-        for (int i = 0; i <32 ; i++) {
-
-            D_memory.addInput(alu.getOutput(i));
-        }
-        for (int i = 0; i <32 ; i++) {
-
-            D_memory.addInput(registerfile.getOutput(32+i));
-
-        }
+//        for (int i = 0; i <32 ; i++) {
+//
+//            D_memory.addInput(alu.getOutput(i));
+//        }
+//        for (int i = 0; i <32 ; i++) {
+//
+//            D_memory.addInput(registerfile.getOutput(32+i));
+//
+//        }
         I_memory.addInput(Simulator.trueLogic);
         I_memory.addInput(Simulator.falseLogic);
-            I_memory.addInput( pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
-                    pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
-                    pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
-                    pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
+        I_memory.addInput( pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
+            pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
+            pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
+            pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
         for (int i = 0; i <32 ; i++) {
             I_memory.addInput(Simulator.falseLogic);
 
@@ -146,7 +146,7 @@ public class Sample {
         for(int i=0;i<32;i++){
             muxsafterdatamem.add(new Mux2to1("mux" + i, "3x1",
                             controlUnit.getOutput(2),//memtoreg signal(control signal)
-                            alu.getOutput(i),D_memory.getOutput(i) //az data mem baiad biad
+                            alu.getOutput(i),Simulator.falseLogic//D_memory.getOutput(i) //az data mem baiad biad
                     )
             );
         }
