@@ -1,50 +1,9 @@
-package simulator.gates.combinational;
-
-import simulator.control.Simulator;
-import simulator.network.Link;
-import simulator.network.Node;
-
-import java.util.Arrays;
-
-/*
-Inputs:
-in[0]:read signal
-in[2]:Write signal
-in[2:33]:Address,needed for accesing memory
-in[34:65]:Data,Which is going to be written in memory at given address
-
-Outputs:
-out[0:31]:Data,which is read from memory
-
-*/
 public class Memory extends Node {
-    private Boolean[] memoryP1;
-    private Boolean[] memoryP2;
+    private Boolean[] memory;
 
     public Memory(String label, Link... links) {
         super(label, links);
-        memoryP1 = new Boolean[65536];
-        memoryP2 = new Boolean[65536];
-        Arrays.fill(memoryP1,false);
-        Arrays.fill(memoryP2,false);
-        memoryP1[7]=true;
-        memoryP1[9]=true;
-        memoryP1[12]=true;
-        memoryP1[15]=true;
-        memoryP1[14]=true;
-        memoryP1[17]=true;
-        memoryP1[20]=true;
-        memoryP1[26]=true;
-        memoryP1[7+32]=true;
-        memoryP1[10+32]=true;
-        memoryP1[12+32]=true;
-        memoryP1[15+32]=true;
-        memoryP1[14+32]=true;
-        memoryP1[17+32]=true;
-        memoryP1[20+32]=true;
-        memoryP1[26+32]=true;
-        // memoryP1[25]=Simulator.trueLogic;
-
+        memory = new Boolean[65536];
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
@@ -52,63 +11,48 @@ public class Memory extends Node {
 
     private int address() {
         int temp = 0;
-        for (int i = 18; i < 34; ++i) {
+        for (int i = 1; i < 17; ++i) {
             if(inputs.size() > i) {
                 if(getInput(i).getSignal()) {
-                    temp += Math.pow(2, 33 - i);
+                    temp += Math.pow(2, 16 - i);
                 }
             }
         }
-        if (temp==214748364) return 0;
         return temp;
     }
 
     private void memoryWrite() {
-        if (address()<65536-32)
-            for(int i = 34; i < 66; ++i) {
-                memoryP1[address() + i - 34] = getInput(i).getSignal();
+        int address = address();
+
+        for(int i = 17; i < 49; ++i) {
+            if (address + i - 17 <= 65535) {
+                memory[address + i - 17] = getInput(i).getSignal();
             }
-        else{for(int i = 34; i < 66; ++i) {
-            memoryP2[address()-65536 + i ] = getInput(i).getSignal();
-        }}
+        }
     }
 
     private void memoryRead(){
-        if (address()<65536)
-            for (int i = 0; i < 32; ++i) {
-                getOutput(i).setSignal(memoryP1[address() + i]);
-            }
-        else{
-            for (int i = 0; i < 32; ++i) {
-                getOutput(i).setSignal(memoryP2[address()-65536 + i]);}
+        int address = address();
 
+        for (int i = 0; i < 32; ++i) {
+            if (address + i <= 65535) {
+                getOutput(i).setSignal(memory[address + i]);
+            }
         }
     }
 
     @Override
     public void evaluate() {
-        for(int i=0;i<34;i++){
-            System.out.println(getInput(i).getSignal());
-        }
-        System.out.println("############################################################################################");
-        if (getInput(1).getSignal()) {
+        if (getInput(0).getSignal())
             memoryWrite();
-        } else
-        if (getInput(0).getSignal()) {
-
-            memoryRead();
-        }
+        memoryRead();
     }
 
-    public void setMemory(Boolean[] memoryP1,Boolean[] memoryP2) {
-        this.memoryP1 = memoryP1;
-        this.memoryP2 = memoryP2;
+    public void setMemory(Boolean[] memory) {
+        this.memory = memory;
     }
 
-    public Boolean[] getMemoryP1() {
-        return memoryP1;
-    }
-    public Boolean[] getMemoryP2() {
-        return memoryP2;
+    public Boolean[] getMemory() {
+        return memory;
     }
 }

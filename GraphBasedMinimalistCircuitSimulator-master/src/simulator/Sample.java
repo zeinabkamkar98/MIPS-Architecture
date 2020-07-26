@@ -83,10 +83,9 @@ public class Sample {
 //            D_memory.addInput(registerfile.getOutput(32+i));
 //
 //        }
-        I_memory.addInput(Simulator.trueLogic);
+        // I_memory.addInput(Simulator.trueLogic);
         I_memory.addInput(Simulator.falseLogic);
-        I_memory.addInput( pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
-            pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
+        I_memory.addInput(
             pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
             pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
         for (int i = 0; i <32 ; i++) {
