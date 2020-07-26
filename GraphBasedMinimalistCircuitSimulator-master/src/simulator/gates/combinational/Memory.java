@@ -35,6 +35,14 @@ public class Memory extends Node {
         memoryP1[17]=true;
         memoryP1[20]=true;
         memoryP1[26]=true;
+        memoryP1[7+32]=true;
+        memoryP1[10+32]=true;
+        memoryP1[12+32]=true;
+        memoryP1[15+32]=true;
+        memoryP1[14+32]=true;
+        memoryP1[17+32]=true;
+        memoryP1[20+32]=true;
+        memoryP1[26+32]=true;
         // memoryP1[25]=Simulator.trueLogic;
 
         for (int i = 0; i < 32; ++i) {
