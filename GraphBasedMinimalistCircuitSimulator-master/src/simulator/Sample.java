@@ -2,9 +2,11 @@
 
 package simulator;
 import simulator.control.Simulator;
-import simulator.gates.combinational.ByteMemory;
+import simulator.gates.combinational.And;
 import simulator.gates.combinational.Memory;
+import simulator.gates.sequential.BigClock;
 import simulator.gates.sequential.Clock;
+import simulator.network.Link;
 import simulator.wrapper.wrappers.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class Sample {
 //        D_memory = d_memory;
 //    }
 
-    public static Clock clock = new Clock("clock",1000);
+    public static BigClock clock = new BigClock("clock");
 
 
     public static void main(String[] args) {
@@ -59,21 +61,81 @@ public class Sample {
         List<Mux2to1> muxsafterdatamem = new ArrayList<>();
         List<Mux2to1> muxBeforeMem1 = new ArrayList<>();
         List<Mux2to1> muxBeforeMem2 = new ArrayList<>();
+        List<Mux2to1> multiplexers=new ArrayList<>();
 
+        SignExtend conAdderss=new SignExtend("signExtend","16x32");
+        conAdderss.addInput(
+                I_memory.getOutput(10),
+                I_memory.getOutput(11),
+                I_memory.getOutput(12),
+                I_memory.getOutput(13),
+                I_memory.getOutput(14),
+                I_memory.getOutput(15),
+                I_memory.getOutput(16),
+                I_memory.getOutput(17),
+                I_memory.getOutput(18),
+                I_memory.getOutput(19),
+                I_memory.getOutput(20),
+                I_memory.getOutput(21),
+                I_memory.getOutput(22),
+                I_memory.getOutput(23),
+                I_memory.getOutput(24),
+                I_memory.getOutput(26)
+        );
+
+        ShiftLeft32to32b shift32=new ShiftLeft32to32b("shift32","32x32");
+        shift32.addInput(
+                conAdderss.getOutput(0),conAdderss.getOutput(1),conAdderss.getOutput(2),conAdderss.getOutput(3),conAdderss.getOutput(4),conAdderss.getOutput(5),conAdderss.getOutput(6),conAdderss.getOutput(7),
+                conAdderss.getOutput(8),conAdderss.getOutput(9),conAdderss.getOutput(10),conAdderss.getOutput(11),conAdderss.getOutput(12),conAdderss.getOutput(13),conAdderss.getOutput(14),conAdderss.getOutput(15),
+                conAdderss.getOutput(16),conAdderss.getOutput(17),conAdderss.getOutput(18),conAdderss.getOutput(19),conAdderss.getOutput(20),conAdderss.getOutput(21),conAdderss.getOutput(22),conAdderss.getOutput(23),
+                conAdderss.getOutput(24),conAdderss.getOutput(25),conAdderss.getOutput(26),conAdderss.getOutput(27),conAdderss.getOutput(28),conAdderss.getOutput(29),conAdderss.getOutput(30),conAdderss.getOutput(31)
+        );
+        Link[] links=new Link[32];
+        for (int i = 0; i <32 ; i++) {
+            links[i]=new And("and",controlUnit.getOutput(6),shift32.getOutput(i)).getOutput(0);
+        }
+
+        Adder branchAdd=new Adder("branchAdd","64x32");
+        branchAdd.addInput(
+                shift32.getOutput(0),shift32.getOutput(1),shift32.getOutput(2),shift32.getOutput(3),shift32.getOutput(4),shift32.getOutput(5),shift32.getOutput(6),shift32.getOutput(7),
+                shift32.getOutput(8),shift32.getOutput(9),shift32.getOutput(10),shift32.getOutput(11),shift32.getOutput(12),shift32.getOutput(13),shift32.getOutput(14),shift32.getOutput(15),
+                shift32.getOutput(16),shift32.getOutput(17),shift32.getOutput(18),shift32.getOutput(19),shift32.getOutput(20),shift32.getOutput(21),shift32.getOutput(22),shift32.getOutput(23),
+                shift32.getOutput(24),shift32.getOutput(25),shift32.getOutput(26),shift32.getOutput(27),shift32.getOutput(28),shift32.getOutput(29),shift32.getOutput(30),shift32.getOutput(31),
+
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+
+        );
+        for (int i = 0; i < 26; i++) {
+            multiplexers.add(new Mux2to1("m","3x1",controlUnit.getOutput(6),Simulator.falseLogic,Simulator.falseLogic));
+
+        }
+        multiplexers.add(new Mux2to1("m","3x1",controlUnit.getOutput(6),Simulator.trueLogic,Simulator.trueLogic));
+
+        for (int i = 27; i < 32; i++) {
+            multiplexers.add(new Mux2to1("m","3x1",controlUnit.getOutput(6),Simulator.falseLogic,Simulator.falseLogic));
+
+        }
 
         Adder adder=new Adder("1","64x32", pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
                 pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
                 pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
-                );
+//                multiplexers.get(0).getOutput(0),multiplexers.get(1).getOutput(0),multiplexers.get(2).getOutput(0),multiplexers.get(3).getOutput(0),
+//                multiplexers.get(4).getOutput(0),multiplexers.get(5).getOutput(0),multiplexers.get(6).getOutput(0),multiplexers.get(7).getOutput(0),
+//                multiplexers.get(8).getOutput(0),multiplexers.get(9).getOutput(0),multiplexers.get(10).getOutput(0),multiplexers.get(11).getOutput(0),
+//                multiplexers.get(12).getOutput(0),multiplexers.get(13).getOutput(0),multiplexers.get(14).getOutput(0),multiplexers.get(15).getOutput(0),
+//                multiplexers.get(16).getOutput(0),multiplexers.get(17).getOutput(0),multiplexers.get(18).getOutput(0),multiplexers.get(19).getOutput(0),
+//                multiplexers.get(20).getOutput(0),multiplexers.get(21).getOutput(0),multiplexers.get(22).getOutput(0),multiplexers.get(23).getOutput(0),
+//                multiplexers.get(24).getOutput(0),multiplexers.get(25).getOutput(0),multiplexers.get(26).getOutput(0),multiplexers.get(27).getOutput(0),
+//                multiplexers.get(28).getOutput(0),multiplexers.get(29).getOutput(0),multiplexers.get(30).getOutput(0),multiplexers.get(31).getOutput(0)
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+                Simulator.falseLogic,Simulator.falseLogic,Simulator.trueLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+        );
         pc.addInput(
                 adder.getOutput(0),adder.getOutput(1),adder.getOutput(2),adder.getOutput(3),adder.getOutput(4),adder.getOutput(5),adder.getOutput(6),adder.getOutput(7),
                 adder.getOutput(8),adder.getOutput(9),adder.getOutput(10),adder.getOutput(11),adder.getOutput(12),adder.getOutput(13),adder.getOutput(14),adder.getOutput(15),
@@ -202,7 +264,7 @@ public class Sample {
         //
 
         Simulator.debugger.addTrackItem(I_memory);
-        Simulator.debugger.setDelay(500);
+        Simulator.debugger.setDelay(1);
         Simulator.circuit.startCircuit();
     }
 
