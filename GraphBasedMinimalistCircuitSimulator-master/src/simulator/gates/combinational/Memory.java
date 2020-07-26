@@ -26,6 +26,16 @@ public class Memory extends Node {
         memoryP2 = new Boolean[65536];
         Arrays.fill(memoryP1,false);
         Arrays.fill(memoryP2,false);
+        memoryP1[7]=Simulator.trueLogic;
+        memoryP1[9]=Simulator.trueLogic;
+        memoryP1[12]=Simulator.trueLogic;
+        memoryP1[15]=Simulator.trueLogic;
+        memoryP1[14]=Simulator.trueLogic;
+        memoryP1[17]=Simulator.trueLogic;
+        memoryP1[20]=Simulator.trueLogic;
+        memoryP1[26]=Simulator.trueLogic;
+        // memoryP1[25]=Simulator.trueLogic;
+
         for (int i = 0; i < 32; ++i) {
             addOutputLink(false);
         }
