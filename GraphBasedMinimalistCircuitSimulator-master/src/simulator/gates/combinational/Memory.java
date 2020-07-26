@@ -1,5 +1,6 @@
 package simulator.gates.combinational;
 
+import simulator.control.Simulator;
 import simulator.network.Link;
 import simulator.network.Node;
 
@@ -26,14 +27,14 @@ public class Memory extends Node {
         memoryP2 = new Boolean[65536];
         Arrays.fill(memoryP1,false);
         Arrays.fill(memoryP2,false);
-        memoryP1[7]=Simulator.trueLogic;
-        memoryP1[9]=Simulator.trueLogic;
-        memoryP1[12]=Simulator.trueLogic;
-        memoryP1[15]=Simulator.trueLogic;
-        memoryP1[14]=Simulator.trueLogic;
-        memoryP1[17]=Simulator.trueLogic;
-        memoryP1[20]=Simulator.trueLogic;
-        memoryP1[26]=Simulator.trueLogic;
+        memoryP1[7]=true;
+        memoryP1[9]=true;
+        memoryP1[12]=true;
+        memoryP1[15]=true;
+        memoryP1[14]=true;
+        memoryP1[17]=true;
+        memoryP1[20]=true;
+        memoryP1[26]=true;
         // memoryP1[25]=Simulator.trueLogic;
 
         for (int i = 0; i < 32; ++i) {
