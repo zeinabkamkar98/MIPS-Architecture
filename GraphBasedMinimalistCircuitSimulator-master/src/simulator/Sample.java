@@ -15,14 +15,23 @@ import java.util.List;
 
 public class Sample {
 
-    public static   Memory memory=new Memory("M!");
+    public static   Memory I_memory=new Memory("I_MEMORY");
+    public static   Memory D_memory=new Memory("MD_MEMORY");
 
-    public static Memory getMemory() {
-        return memory;
+    public static Memory getI_Memory() {
+        return I_memory;
     }
 
-    public static void setMemory(Memory memory) {
-        Sample.memory = memory;
+    public static void setI_Memory(Memory memory) {
+        Sample.I_memory = memory;
+    }
+
+    public static Memory getD_memory() {
+        return D_memory;
+    }
+
+    public static void setD_memory(Memory d_memory) {
+        D_memory = d_memory;
     }
 
     public static Clock clock = new Clock("clock",1000);
@@ -58,21 +67,28 @@ public class Sample {
                 nextPcValue.getOutput(24),nextPcValue.getOutput(25),nextPcValue.getOutput(26),nextPcValue.getOutput(27),nextPcValue.getOutput(28),nextPcValue.getOutput(29),nextPcValue.getOutput(30),nextPcValue.getOutput(31)
         );
 
-        memory.addInput(controlUnit.getOutput(4));
-        memory.addInput(controlUnit.getOutput(5));
+        D_memory.addInput(controlUnit.getOutput(4));
+        D_memory.addInput(controlUnit.getOutput(5));
 
 
         for (int i = 0; i <32 ; i++) {
 
-            muxBeforeMem1.add(new Mux2to1("m"+i,"3x1",new And("a",controlUnit.getOutput(5),new Not("n",controlUnit.getOutput(4)).getOutput(0)).getOutput(0),pc.getOutput(0),
-                    alu.getOutput(0)));
-            memory.addInput(muxBeforeMem1.get(i).getOutput(0));
+            D_memory.addInput(alu.getOutput(i));
         }
         for (int i = 0; i <32 ; i++) {
 
-            muxBeforeMem2.add(new Mux2to1("m"+i,"3x1",new And("a",controlUnit.getOutput(5),new Not("n",controlUnit.getOutput(4)).getOutput(0)).getOutput(0),Simulator.falseLogic,
-                    registerfile.getOutput(i)));
-            memory.addInput(muxBeforeMem2.get(i).getOutput(0));
+            D_memory.addInput(registerfile.getInput(32+i));
+
+        }
+        I_memory.addInput(Simulator.trueLogic);
+        I_memory.addInput(Simulator.falseLogic);
+            I_memory.addInput( pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
+                    pc.getOutput(8),pc.getOutput(9),pc.getOutput(10),pc.getOutput(11),pc.getOutput(12),pc.getOutput(13),pc.getOutput(14),pc.getOutput(15),
+                    pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
+                    pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31));
+        for (int i = 0; i <32 ; i++) {
+            I_memory.addInput(Simulator.falseLogic);
+
         }
         nextPcValue.addInput(
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
@@ -81,33 +97,33 @@ public class Sample {
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
 
                 //instruction[26-0]
-                memory.getOutput(6),memory.getOutput(7),memory.getOutput(8),memory.getOutput(9),memory.getOutput(10),memory.getOutput(11),memory.getOutput(12),memory.getOutput(13),
-                memory.getOutput(14),memory.getOutput(15),memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21),
-                memory.getOutput(22),memory.getOutput(23),memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),
-                memory.getOutput(30),memory.getOutput(31),
+                I_memory.getOutput(6), I_memory.getOutput(7), I_memory.getOutput(8), I_memory.getOutput(9), I_memory.getOutput(10),I_memory.getOutput(11),I_memory.getOutput(12),I_memory.getOutput(13),
+                I_memory.getOutput(14), I_memory.getOutput(15), I_memory.getOutput(16), I_memory.getOutput(17), I_memory.getOutput(18),I_memory.getOutput(19),I_memory.getOutput(20),I_memory.getOutput(21),
+                I_memory.getOutput(22), I_memory.getOutput(23), I_memory.getOutput(24), I_memory.getOutput(25), I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29),
+                I_memory.getOutput(30), I_memory.getOutput(31),
 
                 alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)//zero,branch,jump
         );
 
         //input : instruction[31-26]   //output :  output[4] MemRead &&& output[5]MemWrite(data memory)  ///baghie signala controli ro vasel kardim
-        controlUnit.addInput(memory.getOutput(5), memory.getOutput(4),memory.getOutput(3),memory.getOutput(2),memory.getOutput(1),memory.getOutput(0));
+        controlUnit.addInput(I_memory.getOutput(5), I_memory.getOutput(4),I_memory.getOutput(3),I_memory.getOutput(2),I_memory.getOutput(1),I_memory.getOutput(0));
 
         alucontrolunit.addInput(
                 controlUnit.getOutput(7),controlUnit.getOutput(8),
-                memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29),memory.getOutput(30),memory.getOutput(31)
+                I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29),I_memory.getOutput(30),I_memory.getOutput(31)
         );
 
         //5 mux ghabl az register //select az regDST
         //input[0] instruction[20] //input[1] instruction[15]
-        Mux2to1 muxbeforeregMSB4 = new Mux2to1("muxbeforeregMSB4","3X1",controlUnit.getOutput(0),memory.getOutput(11),memory.getOutput(16));
+        Mux2to1 muxbeforeregMSB4 = new Mux2to1("muxbeforeregMSB4","3X1",controlUnit.getOutput(0),I_memory.getOutput(11),I_memory.getOutput(16));
         //input[0] instruction[19] //input[1] instruction[14]
-        Mux2to1 muxbeforeregMSB3 = new Mux2to1("muxbeforeregMSB3","3X1",controlUnit.getOutput(0),memory.getOutput(12),memory.getOutput(17));
+        Mux2to1 muxbeforeregMSB3 = new Mux2to1("muxbeforeregMSB3","3X1",controlUnit.getOutput(0),I_memory.getOutput(12),I_memory.getOutput(17));
         //input[0] instruction[18] //input[1] instruction[13]
-        Mux2to1 muxbeforeregMSB2 = new Mux2to1("muxbeforeregMSB2","3X1",controlUnit.getOutput(0),memory.getOutput(13),memory.getOutput(18));
+        Mux2to1 muxbeforeregMSB2 = new Mux2to1("muxbeforeregMSB2","3X1",controlUnit.getOutput(0),I_memory.getOutput(13),I_memory.getOutput(18));
         //input[0] instruction[17] //input[1] instruction[12]
-        Mux2to1 muxbeforeregMSB1 = new Mux2to1("muxbeforeregMSB1","3X1",controlUnit.getOutput(0),memory.getOutput(14),memory.getOutput(19));
+        Mux2to1 muxbeforeregMSB1 = new Mux2to1("muxbeforeregMSB1","3X1",controlUnit.getOutput(0),I_memory.getOutput(14),I_memory.getOutput(19));
         //input[0] instruction[16] //input[1] instruction[11]
-        Mux2to1 muxbeforeregMSB0 = new Mux2to1("muxbeforeregMSB0","3X1",controlUnit.getOutput(0),memory.getOutput(25),memory.getOutput(20));
+        Mux2to1 muxbeforeregMSB0 = new Mux2to1("muxbeforeregMSB0","3X1",controlUnit.getOutput(0),I_memory.getOutput(25),I_memory.getOutput(20));
 
         //////Register file
         //input[0-5] ==== instruction[25-21]
@@ -115,8 +131,8 @@ public class Sample {
         //input[11-15] ==== mux haie bala az MSB4 ta MSB0
         //input[16] === regWrite
         registerfile.addInput(
-                memory.getOutput(6), memory.getOutput(7), memory.getOutput(8), memory.getOutput(9), memory.getOutput(10),
-                memory.getOutput(11), memory.getOutput(12), memory.getOutput(13), memory.getOutput(14), memory.getOutput(15),
+                I_memory.getOutput(6), I_memory.getOutput(7), I_memory.getOutput(8), I_memory.getOutput(9), I_memory.getOutput(10),
+                I_memory.getOutput(11), I_memory.getOutput(12), I_memory.getOutput(13), I_memory.getOutput(14), I_memory.getOutput(15),
                 muxbeforeregMSB4.getOutput(0),muxbeforeregMSB3.getOutput(0),muxbeforeregMSB2.getOutput(0),muxbeforeregMSB1.getOutput(0),muxbeforeregMSB0.getOutput(0),
                 controlUnit.getOutput(3)
         );
@@ -127,7 +143,7 @@ public class Sample {
         for(int i=0;i<32;i++){
             muxsafterdatamem.add(new Mux2to1("mux" + i, "3x1",
                             controlUnit.getOutput(2),//memtoreg signal(control signal)
-                            alu.getOutput(i),Simulator.falseLogic //az data mem baiad biad
+                            alu.getOutput(i),D_memory.getOutput(i) //az data mem baiad biad
                     )
             );
         }
@@ -142,11 +158,11 @@ public class Sample {
                 registerfile.getOutput(8),registerfile.getOutput(9),registerfile.getOutput(10),registerfile.getOutput(11),registerfile.getOutput(12),registerfile.getOutput(13),registerfile.getOutput(14),registerfile.getOutput(15),
                 registerfile.getOutput(16),registerfile.getOutput(17),registerfile.getOutput(18),registerfile.getOutput(19),registerfile.getOutput(20),registerfile.getOutput(21),registerfile.getOutput(22),registerfile.getOutput(23),
                 registerfile.getOutput(24),registerfile.getOutput(25),registerfile.getOutput(26),registerfile.getOutput(27),registerfile.getOutput(28),registerfile.getOutput(29),registerfile.getOutput(30),registerfile.getOutput(31)
-                );
+        );
         //second alu input(select beewen imediat and register)
         signExtend.addInput(
-                memory.getOutput(16),memory.getOutput(17),memory.getOutput(18),memory.getOutput(19),memory.getOutput(20),memory.getOutput(21), memory.getOutput(22),memory.getOutput(23),
-                memory.getOutput(24),memory.getOutput(25),memory.getOutput(26),memory.getOutput(27),memory.getOutput(28),memory.getOutput(29), memory.getOutput(30),memory.getOutput(31)
+                I_memory.getOutput(16),I_memory.getOutput(17),I_memory.getOutput(18),I_memory.getOutput(19),I_memory.getOutput(20),I_memory.getOutput(21), I_memory.getOutput(22),I_memory.getOutput(23),
+                I_memory.getOutput(24),I_memory.getOutput(25),I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29), I_memory.getOutput(30),I_memory.getOutput(31)
         );
 
         for(int i=0;i<32;i++){
@@ -162,6 +178,7 @@ public class Sample {
 
         //alu control signal
         alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
+
 
         //add alu output to data memory address
 
