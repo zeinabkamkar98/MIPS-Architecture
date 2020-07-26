@@ -158,7 +158,7 @@ public class Sample {
         
         alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
 
-        Simulator.debugger.addTrackItem(registerfile,alu,I_memory);
+        Simulator.debugger.addTrackItem(registerfile,alu);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
