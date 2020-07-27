@@ -201,7 +201,7 @@ public class Sample {
 
         );
 
-        Simulator.debugger.addTrackItem(I_memory);
+        Simulator.debugger.addTrackItem(registerfile);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();

@@ -43,7 +43,7 @@ public class RegisterFile extends Wrapper {//Reg1//Reg2//Reg3//WriteData//RegWri
 
 
         for(int i = 0; i < 32; i++){
-            REGONEMUX[i] = new Mux32to5("MUX32TO5", "37X1", getInput(4), getInput(3), getInput(2), getInput(1), getInput(0));
+            REGONEMUX[i] = new Mux32to5("MUX32TO51", "37X1", getInput(4), getInput(3), getInput(2), getInput(1), getInput(0));
             for(int j = 0; j < 32; j++){
                 REGONEMUX[i].addInput(regfile[j][i].getOutput(0));
             }

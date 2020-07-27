@@ -42,6 +42,22 @@ public class Memory extends Node {
         memory[26+32]=true;
         memory[28+32]=true;
         memory[30+32]=true;
+        memory[7+64]=true;
+        memory[9+64]=true;
+        memory[12+64]=true;
+        memory[15+64]=true;
+        memory[17+64]=true;
+        memory[19+64]=true;
+        memory[20+64]=true;
+        memory[26+64]=true;
+        memory[30+64]=true;
+        memory[7+96]=true;
+        memory[9+96]=true;
+        memory[10+96]=true;
+        memory[12+96]=true;
+        memory[14+96]=true;
+        memory[17+96]=true;
+        memory[26+96]=true;
 
 
     }
