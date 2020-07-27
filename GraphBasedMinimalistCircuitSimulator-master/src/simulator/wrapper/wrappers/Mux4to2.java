@@ -10,7 +10,7 @@ import simulator.wrapper.Wrapper;
 
 public class Mux4to2 extends Wrapper {
     //input=>0=select0(l),1=select1(h),2=in0,3=in1,4=in2,5=in3
-    //ouput=>0=output
+    //output=>0=output
 
     public Mux4to2(String label, String stream, Link... links) {
         super(label, stream, links);

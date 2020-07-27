@@ -23,6 +23,7 @@ public class Sample {
         NextPcValueBit nextPcValue=new NextPcValueBit("newPc","61x32");
 
         Memory I_memory= new Memory("I_MEMORY");
+        Memory D_memory= new Memory("D_MEMORY");
 
         ControlUnit controlunit = new ControlUnit("controlunit","6X10");
 
@@ -70,11 +71,22 @@ public class Sample {
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,
 
-                //alu.getOutput(32),controlUnit.getOutput(6),controlUnit.getOutput(9)//zero,branch,jump####################################################################
+//                I_memory.getOutput(6),I_memory.getOutput(7),I_memory.getOutput(8),I_memory.getOutput(9),
+//                I_memory.getOutput(10),I_memory.getOutput(11),I_memory.getOutput(12),I_memory.getOutput(13),
+//                I_memory.getOutput(14),I_memory.getOutput(15),I_memory.getOutput(16),I_memory.getOutput(17),
+//                I_memory.getOutput(18),I_memory.getOutput(19),I_memory.getOutput(20),I_memory.getOutput(21),
+//
+//                I_memory.getOutput(22),I_memory.getOutput(23),I_memory.getOutput(24),I_memory.getOutput(25),
+//                I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29),
+//                I_memory.getOutput(30),I_memory.getOutput(31),
+
+
+                // alu.getOutput(32),controlunit.getOutput(6),controlunit.getOutput(9)#############################
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
         );
 
-        I_memory.addInput(Simulator.falseLogic,
+        I_memory.addInput(
+                Simulator.falseLogic,
 
                 pc.getOutput(16),pc.getOutput(17),pc.getOutput(18),pc.getOutput(19),
                 pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
@@ -92,6 +104,7 @@ public class Sample {
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
 
         );
+
 
         controlunit.addInput(I_memory.getOutput(5),I_memory.getOutput(4),I_memory.getOutput(3)
                             ,I_memory.getOutput(2),I_memory.getOutput(1),I_memory.getOutput(0));
@@ -116,29 +129,30 @@ public class Sample {
             );
         }
 
-        registerfile.addInput(I_memory.getOutput(6),I_memory.getOutput(7),I_memory.getOutput(8),I_memory.getOutput(9),
+        registerfile.addInput(
+                I_memory.getOutput(6),I_memory.getOutput(7),I_memory.getOutput(8),I_memory.getOutput(9),
                 I_memory.getOutput(10),I_memory.getOutput(11),I_memory.getOutput(12),I_memory.getOutput(13),
-                I_memory.getOutput(14),I_memory.getOutput(15),muxsbeforereg.get(0).getOutput(0),muxsbeforereg.get(1).getOutput(0)
-                ,muxsbeforereg.get(2).getOutput(0),muxsbeforereg.get(3).getOutput(0),muxsbeforereg.get(4).getOutput(0),
+                I_memory.getOutput(14),I_memory.getOutput(15),
+                muxsbeforereg.get(0).getOutput(0),muxsbeforereg.get(1).getOutput(0),muxsbeforereg.get(2).getOutput(0),
+                muxsbeforereg.get(3).getOutput(0),muxsbeforereg.get(4).getOutput(0),
                 controlunit.getOutput(3)
         );
-        registerfile.addInput(alu.getOutput(0),alu.getOutput(1),alu.getOutput(2),alu.getOutput(3),
-                alu.getOutput(4),alu.getOutput(5),alu.getOutput(6),alu.getOutput(7),
-                alu.getOutput(8),alu.getOutput(9),alu.getOutput(10),alu.getOutput(11),
-                alu.getOutput(12),alu.getOutput(13),alu.getOutput(14),alu.getOutput(15),
-                alu.getOutput(16),alu.getOutput(17),alu.getOutput(18),alu.getOutput(19),
-                alu.getOutput(20),alu.getOutput(21),alu.getOutput(22),alu.getOutput(23),
-                alu.getOutput(24),alu.getOutput(25),alu.getOutput(26),alu.getOutput(27),
-                alu.getOutput(28),alu.getOutput(29),alu.getOutput(30),alu.getOutput(31)
-        );
+
+        //register write 32bit
         for(int i=0;i<32;i++){
-            muxsbeforealu.add(new Mux2to1("mux" + i, "3x1",
-                            controlunit.getOutput(1),
-                            registerfile.getOutput(i+32),signExtend.getOutput(i)
+            muxsbeforewrite.add(new Mux2to1("mux" + i, "3x1",
+                            controlunit.getOutput(2),
+                            alu.getOutput(i),D_memory.getOutput(i)
                     )
             );
         }
 
+        for (int i=0;i<32;i++){
+            registerfile.addInput(muxsbeforewrite.get(i).getOutput(0));
+        }
+
+
+        //alu input 1
         alu.addInput(
                 registerfile.getOutput(0),registerfile.getOutput(1),registerfile.getOutput(2),registerfile.getOutput(3),
                 registerfile.getOutput(4),registerfile.getOutput(5),registerfile.getOutput(6),registerfile.getOutput(7),
@@ -150,15 +164,44 @@ public class Sample {
                 registerfile.getOutput(28),registerfile.getOutput(29),registerfile.getOutput(30),registerfile.getOutput(31)
         );
 
+        //alu input2
+        for(int i=0;i<32;i++){
+            muxsbeforealu.add(new Mux2to1("mux" + i, "3x1",
+                            controlunit.getOutput(1),
+                            registerfile.getOutput(i+32),signExtend.getOutput(i)
+                    )
+            );
+        }
+
         for (int i=0;i<32;i++){
             alu.addInput(muxsbeforealu.get(i).getOutput(0));
         }
 
-
-        
+        //alu control unit
         alu.addInput(alucontrolunit.getOutput(3),alucontrolunit.getOutput(2),alucontrolunit.getOutput(1),alucontrolunit.getOutput(0));
 
-        Simulator.debugger.addTrackItem(registerfile,alu);
+
+
+        D_memory.addInput(
+                controlunit.getOutput(5),
+
+                alu.getOutput(16),alu.getOutput(17),alu.getOutput(18),alu.getOutput(19),
+                alu.getOutput(20),alu.getOutput(21),alu.getOutput(22),alu.getOutput(23),
+                alu.getOutput(24),alu.getOutput(25),alu.getOutput(26),alu.getOutput(27),
+                alu.getOutput(28),alu.getOutput(29),alu.getOutput(30),alu.getOutput(31),
+
+                registerfile.getOutput(32),registerfile.getOutput(33),registerfile.getOutput(34),registerfile.getOutput(35),
+                registerfile.getOutput(36),registerfile.getOutput(37),registerfile.getOutput(38),registerfile.getOutput(39),
+                registerfile.getOutput(40),registerfile.getOutput(41),registerfile.getOutput(42),registerfile.getOutput(43),
+                registerfile.getOutput(44),registerfile.getOutput(45),registerfile.getOutput(46),registerfile.getOutput(47),
+                registerfile.getOutput(48),registerfile.getOutput(49),registerfile.getOutput(50),registerfile.getOutput(51),
+                registerfile.getOutput(52),registerfile.getOutput(53),registerfile.getOutput(54),registerfile.getOutput(55),
+                registerfile.getOutput(56),registerfile.getOutput(57),registerfile.getOutput(58),registerfile.getOutput(59),
+                registerfile.getOutput(60),registerfile.getOutput(61),registerfile.getOutput(62),registerfile.getOutput(63)
+
+        );
+
+        Simulator.debugger.addTrackItem(I_memory);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
