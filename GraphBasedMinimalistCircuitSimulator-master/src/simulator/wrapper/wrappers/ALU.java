@@ -74,16 +74,26 @@ public class ALU extends Wrapper {
                 getInput(56),getInput(57),getInput(58),getInput(59),getInput(60),getInput(61),getInput(62),getInput(63)
         );
 
-        for(int i=0;i<32;i++){
+        for(int i=0;i<31;i++){
             muxs.add(new Mux16to4("mux" + i, "20x1",
                     getInput(64), getInput(65), getInput(66), getInput(67),
                     and.getOutput(i), or.getOutput(i), adder.getOutput(i), Simulator.falseLogic, Simulator.falseLogic,
-                    Simulator.falseLogic, subtractor.getOutput(i), subtractor.getOutput(0), Simulator.falseLogic,
+                    Simulator.falseLogic, subtractor.getOutput(i), Simulator.falseLogic, Simulator.falseLogic,
                     Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
                     Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic
                     )
             );
         }
+
+        muxs.add(new Mux16to4("mux" + 31, "20x1",
+                        getInput(64), getInput(65), getInput(66), getInput(67),
+                        and.getOutput(31), or.getOutput(31), adder.getOutput(31), Simulator.falseLogic, Simulator.falseLogic,
+                        Simulator.falseLogic, subtractor.getOutput(31), subtractor.getOutput(0), Simulator.falseLogic,
+                        Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
+                        Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic
+                )
+        );
+
         for(int i=0;i<32;i++) {
             addOutput(muxs.get(i).getOutput(0));
             notZero.addInput(getOutput(i));
