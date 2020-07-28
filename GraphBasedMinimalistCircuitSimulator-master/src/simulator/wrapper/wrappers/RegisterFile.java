@@ -22,12 +22,15 @@ public class RegisterFile extends Wrapper {//Reg1//Reg2//Reg3//WriteData//RegWri
                 regfile[i][j] = new Register("myReg","2X1");
             }
         }
+        for (int j=0 ; j < 32; j++){
+            regfile[0][j].addInput(Simulator.trueLogic,Simulator.falseLogic);
+        }
 
         Decoder5to32 DECODER5TO32 = new Decoder5to32("DECODER5TO32","5X32");
 
         DECODER5TO32.addInput(getInput(10),getInput(11),getInput(12),getInput(13),getInput(14));
 
-        for(int i = 0; i < 32; i++){
+        for(int i = 1; i < 32; i++){
             for(int j = 0; j < 32; j++){
                 And AND1 = new And("AND1");
                 AND1.addInput(DECODER5TO32.getOutput(i),getInput(15));

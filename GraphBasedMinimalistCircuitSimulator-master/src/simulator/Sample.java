@@ -201,7 +201,9 @@ public class Sample {
 
         );
 
-        Simulator.debugger.addTrackItem(alu);
+
+
+        Simulator.debugger.addTrackItem(registerfile);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();
