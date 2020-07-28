@@ -63,26 +63,26 @@ public class Sample {
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),
                 pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
 
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
-                Simulator.falseLogic,Simulator.falseLogic,
-
-//                I_memory.getOutput(6),I_memory.getOutput(7),I_memory.getOutput(8),I_memory.getOutput(9),
-//                I_memory.getOutput(10),I_memory.getOutput(11),I_memory.getOutput(12),I_memory.getOutput(13),
-//                I_memory.getOutput(14),I_memory.getOutput(15),I_memory.getOutput(16),I_memory.getOutput(17),
-//                I_memory.getOutput(18),I_memory.getOutput(19),I_memory.getOutput(20),I_memory.getOutput(21),
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
+//                Simulator.falseLogic,Simulator.falseLogic,
 //
-//                I_memory.getOutput(22),I_memory.getOutput(23),I_memory.getOutput(24),I_memory.getOutput(25),
-//                I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29),
-//                I_memory.getOutput(30),I_memory.getOutput(31),
+                I_memory.getOutput(6),I_memory.getOutput(7),I_memory.getOutput(8),I_memory.getOutput(9),
+                I_memory.getOutput(10),I_memory.getOutput(11),I_memory.getOutput(12),I_memory.getOutput(13),
+                I_memory.getOutput(14),I_memory.getOutput(15),I_memory.getOutput(16),I_memory.getOutput(17),
+                I_memory.getOutput(18),I_memory.getOutput(19),I_memory.getOutput(20),I_memory.getOutput(21),
+
+                I_memory.getOutput(22),I_memory.getOutput(23),I_memory.getOutput(24),I_memory.getOutput(25),
+                I_memory.getOutput(26),I_memory.getOutput(27),I_memory.getOutput(28),I_memory.getOutput(29),
+                I_memory.getOutput(30),I_memory.getOutput(31),
 
 
-                // alu.getOutput(32),controlunit.getOutput(6),controlunit.getOutput(9)#############################
-                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
+                 alu.getOutput(32),controlunit.getOutput(6),controlunit.getOutput(9)
+//                Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
         );
 
         I_memory.addInput(
@@ -203,7 +203,7 @@ public class Sample {
 
 
 
-        Simulator.debugger.addTrackItem(registerfile);
+        Simulator.debugger.addTrackItem(I_memory,pc);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();

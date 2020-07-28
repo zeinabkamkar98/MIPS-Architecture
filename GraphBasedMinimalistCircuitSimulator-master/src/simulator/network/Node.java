@@ -16,6 +16,7 @@ public abstract class Node implements Linkable{
     protected Boolean visited;
     protected Boolean loop;
     protected Boolean latch;
+    protected Boolean latchValidity;
 
     public Node(String label, Link... links) {
         id = nextID++;
@@ -24,6 +25,7 @@ public abstract class Node implements Linkable{
         visited = false;
         loop = true;
         latch = false;
+        latchValidity = true;
 
         this.label = label;
         addInput(links);
@@ -52,8 +54,8 @@ public abstract class Node implements Linkable{
     @Override
     public void addInput(Link... links) {
         for (Link link: links) {
-            link.addDestination(this);
-            getInputs().add(link);
+                link.addDestination(this);
+                getInputs().add(link);
         }
     }
 
@@ -115,6 +117,15 @@ public abstract class Node implements Linkable{
 
     public void setLatch(Boolean latch) {
         this.latch = latch;
+        latchValidity = !latch;
+    }
+
+    public Boolean getLatchValidity() {
+        return latchValidity;
+    }
+
+    public void setLatchValidity(Boolean latchValidity) {
+        this.latchValidity = latchValidity;
     }
 
     @Override
