@@ -1,5 +1,8 @@
 package simulator.control;
 
+import simulator.gates.combinational.ByteMemory;
+import simulator.gates.combinational.Memory;
+import simulator.gates.sequential.BigClock;
 import simulator.gates.sequential.Clock;
 import simulator.gates.combinational.Explicit;
 import simulator.network.Link;
@@ -14,6 +17,10 @@ public class Circuit implements Runnable {
     private List<List<Node>> netList;
     private Map<Link, List<Node>> removed;
     private Thread thread;
+    private List<BigClock> bigClocks;
+    private int clockCount;
+    private List<Memory> memories;
+    private List<ByteMemory> byteMemories;
 
     public Circuit() {
         dataStreams = new ArrayList<>();
@@ -22,30 +29,73 @@ public class Circuit implements Runnable {
         netList.add(new ArrayList<>());
         clocks = new ArrayList<>();
         thread = new Thread(this);
+        bigClocks = new ArrayList<>();
+        memories = new ArrayList<>();
+        byteMemories = new ArrayList<>();
+        clockCount = -1;
     }
 
     public void addNode(Node node) {
+        if (node instanceof Memory) {
+            memories.add((Memory) node);
+        }
+
+        if (node instanceof ByteMemory) {
+            byteMemories.add((ByteMemory) node);
+        }
+
         if(node instanceof DataStream) {
             dataStreams.add((DataStream) node);
         }
 
-        if(node instanceof Explicit || node instanceof Clock) {
+        if(node instanceof Explicit || node instanceof Clock || node instanceof BigClock) {
             netList.get(0).add(node);
         }
 
         if (node instanceof Clock) {
             clocks.add((Clock) node);
         }
+
+        if (node instanceof BigClock) {
+            bigClocks.add((BigClock) node);
+        }
     }
 
     public void startCircuit() {
         removeDataStream();
+        saveMemoryState();
         removeLoop();
         initializeNetList();
         addLoop();
         startClocks();
         Simulator.debugger.startDebugger();
         thread.start();
+    }
+
+    public void startCircuit(int clockCount) {
+        removeDataStream();
+        saveMemoryState();
+        removeLoop();
+        initializeNetList();
+        addLoop();
+        startClocks();
+        Simulator.debugger.startDebugger();
+        thread.start();
+        this.clockCount = clockCount * 2;
+    }
+
+    private void saveMemoryState() {
+        for (ByteMemory mem: byteMemories) {
+            for (Link in: mem.getInputs()) {
+                mem.getMemIn().add(in);
+            }
+        }
+
+        for (Memory mem: memories) {
+            for (Link in: mem.getInputs()) {
+                mem.getMemIn().add(in);
+            }
+        }
     }
 
     private void removeDataStream() {
@@ -181,14 +231,31 @@ public class Circuit implements Runnable {
         for (Node node: netList.get(level)) {
             for (Link link: node.getOutputs()) {
                 for (Node innerNode : link.getDestinations()) {
-                    boolean flag = true;
+                    if (!innerNode.getLatch() && !node.getLatchValidity()) {
+                        continue;
+                    }
+
+                    if (innerNode.getLatch()) {
+                        boolean latchValid = true;
+                        for (Link inputLink : innerNode.getInputs()) {
+                            if (!inputLink.getSource().getLatchValidity()) {
+                                latchValid = false;
+                                break;
+                            }
+                        }
+
+                        innerNode.setLatchValidity(latchValid);
+                    }
+
+                    boolean valid = true;
                     for (Link innerLink : innerNode.getInputs()) {
                         if (!innerLink.isValid()) {
-                            flag = false;
+                            valid = false;
+                            break;
                         }
                     }
 
-                    if (flag || innerNode.getLatch()) {
+                    if (valid || innerNode.getLatch()) {
                         if (netList.size() < level + 2) {
                             netList.add(new ArrayList<>());
                         }
@@ -210,11 +277,20 @@ public class Circuit implements Runnable {
         }
     }
 
+    private void toggleBigClocks() {
+        for (BigClock bigClock : bigClocks) {
+            bigClock.toggle();
+        }
+    }
+
     @Override
     public void run() {
-        while (true) {
+        int count = 0;
+        while (count < clockCount || clockCount == -1) {
+            toggleBigClocks();
             evaluateNetList();
             Simulator.debugger.run();
+            count ++;
         }
     }
 }
