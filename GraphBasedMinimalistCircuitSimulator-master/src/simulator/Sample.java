@@ -283,7 +283,6 @@ public class Sample {
         );
 
         I_cache.addInput(
-                Simulator.trueLogic,Simulator.falseLogic,
 
                 pc.getOutput(0),pc.getOutput(1),pc.getOutput(2),pc.getOutput(3),
                 pc.getOutput(4),pc.getOutput(5),pc.getOutput(6),pc.getOutput(7),
@@ -294,6 +293,8 @@ public class Sample {
                 pc.getOutput(20),pc.getOutput(21),pc.getOutput(22),pc.getOutput(23),
                 pc.getOutput(24),pc.getOutput(25),pc.getOutput(26),pc.getOutput(27),
                 pc.getOutput(28),pc.getOutput(29),pc.getOutput(30),pc.getOutput(31),
+
+                Simulator.trueLogic,Simulator.falseLogic,
 
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                 Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
@@ -385,8 +386,6 @@ public class Sample {
 
 
         D_cache.addInput(
-                controlunit.getOutput(4),
-                controlunit.getOutput(5),
 
                 alu.getOutput(0),alu.getOutput(1),alu.getOutput(2),alu.getOutput(3),
                 alu.getOutput(4),alu.getOutput(5),alu.getOutput(6),alu.getOutput(7),
@@ -397,6 +396,9 @@ public class Sample {
                 alu.getOutput(20),alu.getOutput(21),alu.getOutput(22),alu.getOutput(23),
                 alu.getOutput(24),alu.getOutput(25),alu.getOutput(26),alu.getOutput(27),
                 alu.getOutput(28),alu.getOutput(29),alu.getOutput(30),alu.getOutput(31),
+
+                controlunit.getOutput(4),
+                controlunit.getOutput(5),
 
                 registerfile.getOutput(32),registerfile.getOutput(33),registerfile.getOutput(34),registerfile.getOutput(35),
                 registerfile.getOutput(36),registerfile.getOutput(37),registerfile.getOutput(38),registerfile.getOutput(39),
@@ -435,7 +437,7 @@ public class Sample {
 //                );
 //        DFlipFlop2 dFlipFlop2=new DFlipFlop2("d","2x2",Simulator.falseLogic,Simulator.trueLogic);
 
-        Simulator.debugger.addTrackItem(I_cache);
+        Simulator.debugger.addTrackItem(I_cache,pc);
 
         Simulator.debugger.setDelay(500);
         Simulator.circuit.startCircuit();

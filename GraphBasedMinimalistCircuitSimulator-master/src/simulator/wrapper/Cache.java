@@ -246,17 +246,18 @@ public class Cache extends Wrapper {
             }
 //            memory.setInput(0, FinalVal.getOutput(0));
 
-//            Not n = new Not("n", Simulator.falseLogic);
-//            And and = new And("a", setDec.getOutput(i/4), n.getOutput(0));
-//            Or or1 = new Or("o", and.getOutput(0), getInput(32), and.getOutput(0));
-//            for (int j = 0; j < 32; j++) {
-//
-//                data[i/4].setInput((i%4)*32+j+2,memory.getOutput(j));
+            Not n = new Not("n", tagCompare.getOutput(0));
+            And and = new And("a", setDec.getOutput(i/4), n.getOutput(0));
+            Or or1 = new Or("o", and.getOutput(0), getInput(32));
+            data[i/4].setInput(1,or1.getOutput(0));
+            for (int j = 0; j < 32; j++) {
+
+                data[i/4].setInput((i%4)*32+j+2,memory.getOutput(j));
 ////                        Mux2to1 choose = new Mux2to1("mux" + i + j, "3x1", getInput(32), getInput(33), memory.getOutput(j));
 ////                        Link link = memory.getOutput(k);
 ////                        data[j].getLOD()[l * 32 + k].setInput(2, new And("a", choose.getOutput(0), Simulator.trueLogic).getOutput(0));
 ////
-//            }
+            }
         }
 //
 
