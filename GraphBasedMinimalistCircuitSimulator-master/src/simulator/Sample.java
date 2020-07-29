@@ -402,17 +402,12 @@ public class Sample {
 //
 //
 //        D_cache.addInput(
-//                controlunit.getOutput(4),
 //                controlunit.getOutput(5),
 //
-//                alu.getOutput(0),alu.getOutput(1),alu.getOutput(2),alu.getOutput(3),
-////                alu.getOutput(4),alu.getOutput(5),alu.getOutput(6),alu.getOutput(7),
-////                alu.getOutput(8),alu.getOutput(9),alu.getOutput(10),alu.getOutput(11),
-////                alu.getOutput(12),alu.getOutput(13),alu.getOutput(14),alu.getOutput(15),
-//                  alu.getOutput(16),alu.getOutput(17),alu.getOutput(18),alu.getOutput(19),
-////                alu.getOutput(20),alu.getOutput(21),alu.getOutput(22),alu.getOutput(23),
-////                alu.getOutput(24),alu.getOutput(25),alu.getOutput(26),alu.getOutput(27),
-////                alu.getOutput(28),alu.getOutput(29),alu.getOutput(30),alu.getOutput(31),
+//                alu.getOutput(16),alu.getOutput(17),alu.getOutput(18),alu.getOutput(19),
+//                alu.getOutput(20),alu.getOutput(21),alu.getOutput(22),alu.getOutput(23),
+//                alu.getOutput(24),alu.getOutput(25),alu.getOutput(26),alu.getOutput(27),
+//                alu.getOutput(28),alu.getOutput(29),alu.getOutput(30),alu.getOutput(31),
 //
 //                registerfile.getOutput(32),registerfile.getOutput(33),registerfile.getOutput(34),registerfile.getOutput(35),
 //                registerfile.getOutput(36),registerfile.getOutput(37),registerfile.getOutput(38),registerfile.getOutput(39),
