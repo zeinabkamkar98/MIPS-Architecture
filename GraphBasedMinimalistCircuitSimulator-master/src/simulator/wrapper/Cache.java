@@ -199,7 +199,7 @@ public class Cache extends Wrapper {
         for (int i = 0; i <32 ; i++) {
 
             checkHit[i]=new Mux2to1("CH"+i,"3x1",tagCompare.getOutput(0),memory.getOutput(i),finalRes[i].getOutput(0));
-            addOutput(checkHit[i].getOutput(0));
+//            addOutput(checkHit[i].getOutput(0));
         }
 //
 //
@@ -285,12 +285,12 @@ public class Cache extends Wrapper {
 //
 //
 
-//      test for valid
-//        for (int i = 0; i < 16; i++) {
-//            addOutput(valid[0].getOutput(0));
-//            addOutput(valid[1].getOutput(0));
-////
-//        }
+//
+        for (int i = 0; i < 16; i++) {
+            addOutput(valid[0].getOutput(0));
+            addOutput(valid[1].getOutput(0));
+//
+        }
     }
 }
 
