@@ -24,6 +24,10 @@ public class LOD extends Wrapper {
             LOD[i]=new SubCache("element"+i,"3x1", Sample.clock.getOutput(0), Simulator.falseLogic, Simulator.falseLogic);
 
         }
+        for (int i = 0; i <128 ; i++) {
+            addOutput(Simulator.falseLogic);
+
+        }
 
 
 
@@ -33,12 +37,10 @@ public class LOD extends Wrapper {
 
 
         }
-        Mux2to1[] mux2to1=new Mux2to1[128];
-        for (int i = 0; i <128 ; i++) {
-            mux2to1[i]=new Mux2to1("Mux"+i,"3x1",getInput(0),Simulator.falseLogic,LOD[i].getOutput(0));
-            addOutput(mux2to1[i].getOutput(0));
-        }
+        for (int i = 0; i < 128; i++) {
+            setOutput(i,new And("a",getInput(0),LOD[i].getOutput(0)).getOutput(0));
 
+        }
 
 
     }

@@ -6,28 +6,27 @@ import simulator.gates.combinational.*;
 import simulator.gates.sequential.Clock;
 import simulator.network.Link;
 import simulator.wrapper.wrappers.*;
-import simulator.wrapper.wrappers.LOD;
 
 import java.util.ArrayList;
 
 public class Cache extends Wrapper {
-    simulator.wrapper.wrappers.LOD[] data;
+    LOD[] data;
     SubCache[][] tags;
     SubCache[] valid;
     Memory memory;
-//    Clock clk;
+    Clock clk;
 
-    public Cache(String label, String stream, Link... links) {
+    public Cache(String label, String stream, Memory mem, Clock clk, Link... links) {
         super(label, stream, links);
-//        this.memory = mem;
-//        this.clk = clk;
+        this.memory = mem;
+        this.clk = clk;
 
 
     }
 
     @Override
     public void initialize() {
-        this.memory = Sample.memory;
+        this.memory = Sample.getMemory();
 //        addOutput(Simulator.trueLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
 //                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
 //                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
@@ -36,11 +35,17 @@ public class Cache extends Wrapper {
 //                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
 //                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic,
 //                Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic, Simulator.falseLogic);
-
+        memory.setInput(0, Simulator.trueLogic);
+        memory.setInput(1, Simulator.falseLogic);
+//
+        for (int i = 0; i <32 ; i++) {
+            memory.setInput(
+                    i + 2, new And("ss",getInput(i),Simulator.trueLogic).getOutput(0));
+        }
 
 
         tags = new SubCache[16][26];
-        data = new simulator.wrapper.wrappers.LOD[16];
+        data = new LOD[16];
         valid = new SubCache[16];
 
 
@@ -57,14 +62,13 @@ public class Cache extends Wrapper {
         }
 ////
         Dec16 setDec = new Dec16("desoder", "4x16",getInput(26), getInput(27),getInput(28), getInput(29));
-//        Decoder offsetDec = new Decoder("desoder", "2x4", getInput(30), getInput(31));
+        Decoder offsetDec = new Decoder("desoder", "2x4", getInput(30), getInput(31));
 
 
 //        Mux16to4[] checkSet = new Mux16to4[128];
         Mux4to2[] checkOffset = new Mux4to2[32];
         Mux2to1[] checkHit = new Mux2to1[32];
 //
-
 //
         for (int i = 0; i < 16; i++) {
             data[i] = new LOD("a", "130x128", Simulator.falseLogic, Simulator.falseLogic,
@@ -100,7 +104,7 @@ public class Cache extends Wrapper {
                     Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                     Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
                     Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic
-            );
+                    );
 
 
         }
@@ -121,7 +125,6 @@ public class Cache extends Wrapper {
 ////
 //
         Mux16to4[] tagComparator=new Mux16to4[26];
-
         for (int i = 0; i <26 ; i++) {
             tagComparator[i]=new Mux16to4("tag Comparetor"+i,"20x1",getInput(26),getInput(27),getInput(28),getInput(29),
 //                    Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,Simulator.falseLogic,
@@ -134,7 +137,7 @@ public class Cache extends Wrapper {
                     tags[12][i].getOutput(0),tags[13][i].getOutput(0),tags[14][i].getOutput(0),tags[15][i].getOutput(0));
 
         }
-        Comparetor tagCompare=new Comparetor("tag comparator","52x1");
+                Comparetor tagCompare=new Comparetor("tag comparator","52x1");
 //
         for (int i = 0; i <26 ; i++) {
 
@@ -189,17 +192,10 @@ public class Cache extends Wrapper {
             finalRes[i].addInput(resultOfLODs[0+i].getOutput(0),resultOfLODs[32+i].getOutput(0),resultOfLODs[64+i].getOutput(0),resultOfLODs[96+i].getOutput(0));
 
         }
-        memory.setInput(0,new Not("NOT",tagCompare.getOutput(0)).getOutput(0));
-        memory.setInput(1, Simulator.falseLogic);
-//
-        for (int i = 0; i <32 ; i++) {
-            memory.setInput(
-                    i + 2, new And("ss",getInput(i),Simulator.trueLogic).getOutput(0));
-        }
         for (int i = 0; i <32 ; i++) {
 
             checkHit[i]=new Mux2to1("CH"+i,"3x1",tagCompare.getOutput(0),memory.getOutput(i),finalRes[i].getOutput(0));
-//            addOutput(checkHit[i].getOutput(0));
+            addOutput(checkHit[i].getOutput(0));
         }
 //
 //
@@ -231,7 +227,6 @@ public class Cache extends Wrapper {
 //
 //        data[0/4].setInput(0,Simulator.falseLogic);
 
-        System.out.println(valid[0].getOutput(0).getSignal());
         Adder[] adders = new Adder[16*4];
         for (int i = 0; i < 16*4; i++) {
             memory.setInput(0,new Not("NOT",tagCompare.getOutput(0)).getOutput(0));
@@ -245,19 +240,20 @@ public class Cache extends Wrapper {
                         j + 2, new And("ss",getInput(j),Simulator.trueLogic).getOutput(0));
             }
 //            memory.setInput(0, FinalVal.getOutput(0));
+            memory.evaluate();
 
-//            Not n = new Not("n", Simulator.falseLogic);
-//            And and = new And("a", setDec.getOutput(i/4), n.getOutput(0));
-//            Or or1 = new Or("o", and.getOutput(0), getInput(32), and.getOutput(0));
-//            for (int j = 0; j < 32; j++) {
+                Not n = new Not("n", Simulator.falseLogic);
+                And and = new And("a", setDec.getOutput(i/4), n.getOutput(0));
+                Or or1 = new Or("o", and.getOutput(0), getInput(32), and.getOutput(0));
+            for (int j = 0; j < 32; j++) {
+
+                data[i/4].setInput((i%4)*32+j+2,memory.getOutput(j));
+//                        Mux2to1 choose = new Mux2to1("mux" + i + j, "3x1", getInput(32), getInput(33), memory.getOutput(j));
+//                        Link link = memory.getOutput(k);
+//                        data[j].getLOD()[l * 32 + k].setInput(2, new And("a", choose.getOutput(0), Simulator.trueLogic).getOutput(0));
 //
-//                data[i/4].setInput((i%4)*32+j+2,memory.getOutput(j));
-////                        Mux2to1 choose = new Mux2to1("mux" + i + j, "3x1", getInput(32), getInput(33), memory.getOutput(j));
-////                        Link link = memory.getOutput(k);
-////                        data[j].getLOD()[l * 32 + k].setInput(2, new And("a", choose.getOutput(0), Simulator.trueLogic).getOutput(0));
-////
-//            }
-        }
+                    }
+                }
 //
 
 
@@ -284,13 +280,7 @@ public class Cache extends Wrapper {
 //
 //
 //
-
 //
-        for (int i = 0; i < 16; i++) {
-            addOutput(valid[0].getOutput(0));
-            addOutput(valid[1].getOutput(0));
-//
-        }
     }
 }
 
